@@ -1,0 +1,18 @@
+package io.baize.flow.common.enums;
+
+import com.baomidou.mybatisplus.annotation.EnumValue;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@AllArgsConstructor
+@Getter
+public enum EnvironmentEnum {
+    DEVELOP("DEVELOP", "开发环境"),
+    TEST("TEST", "测试环境"),
+    PROD("PROD", "生产环境"),
+    ;
+
+    @EnumValue
+    private final String code;
+    private final String description;
+}

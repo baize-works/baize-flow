@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="io.baize.flow.dao.mapper.StreamingJobDefinitionMapper">
+
+    <resultMap id="StreamingJobDefinitionVOMap"
+               type="io.baize.flow.spi.bean.vo.StreamingJobDefinitionVO">
+        <id property="id" column="id"/>
+
+        <result property="jobName" column="job_name"/>
+        <result property="jobDesc" column="job_desc"/>
+        <result property="mode" column="mode"/>
+        <result property="jobType" column="job_type"/>
+        <result property="clientId" column="client_id"/>
+        <result property="savepointPath" column="savepoint_path"/>
+        <result property="jobVersion" column="job_version"/>
+        <result property="releaseState" column="release_state"/>
+
+        <result property="sourceType" column="source_type"/>
+        <result property="sinkType" column="sink_type"/>
+        <result property="sourceTable" column="source_table"/>
+        <result property="sinkTable" column="sink_table"/>
+        <result property="sourceDatasourceId" column="source_datasource_id"/>
+        <result property="sinkDatasourceId" column="sink_datasource_id"/>
+
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+
+        <result property="instanceId" column="instance_id"/>
+        <result property="lastJobStatus" column="last_job_status"/>
+        <result property="engineJobId" column="engine_job_id"/>
+        <result property="lastSubmitTime" column="last_submit_time"/>
+        <result property="lastStartTime" column="last_start_time"/>
+        <result property="lastEndTime" column="last_end_time"/>
+        <result property="lastErrorMessage" column="last_error_message"/>
+    </resultMap>
+
+    <sql id="StreamingDefinitionWhere">
+        <where>
+            <if test="dto != null and dto.jobName != null and dto.jobName != ''">
+                AND d.job_name LIKE CONCAT('%', #{dto.jobName}, '%')
+            </if>
+
+            <if test="dto != null and dto.mode != null">
+                AND d.mode = #{dto.mode}
+            </if>
+
+            <if test="dto != null and dto.jobType != null">
+                AND d.job_type = #{dto.jobType}
+            </if>
+
+            <if test="dto != null and dto.releaseState != null">
+                AND d.release_state = #{dto.releaseState}
+            </if>
+
+            <if test="dto != null and dto.clientId != null">
+                AND d.client_id = #{dto.clientId}
+            </if>
+
+            <if test="dto != null and dto.sourceType != null and dto.sourceType != ''">
+                AND d.source_type = #{dto.sourceType}
+            </if>
+
+            <if test="dto != null and dto.sinkType != null and dto.sinkType != ''">
+                AND d.sink_type = #{dto.sinkType}
+            </if>
+        </where>
+    </sql>
+
+    <select id="selectPageWithLatestInstance" resultMap="StreamingJobDefinitionVOMap">
+        SELECT
+        d.id,
+        d.job_name,
+        d.job_desc,
+        d.mode,
+        d.job_type,
+        d.client_id,
+        d.job_version,
+        d.release_state,
+        d.source_type,
+        d.sink_type,
+        d.source_table,
+        d.sink_table,
+        d.source_datasource_id,
+        d.sink_datasource_id,
+        d.create_time,
+        d.update_time,
+
+        NULL AS checkpoint_config,
+
+        ji.id AS instance_id,
+        ji.savepoint_path AS savepoint_path,
+        ji.job_status AS last_job_status,
+        ji.engine_job_id AS engine_job_id,
+        ji.submit_time AS last_submit_time,
+        ji.start_time AS last_start_time,
+        ji.end_time AS last_end_time,
+        ji.error_message AS last_error_message
+        FROM t_baize_flow_streaming_job_definition d
+        LEFT JOIN (
+        SELECT
+        i.*
+        FROM t_baize_flow_streaming_job_instance i
+        INNER JOIN (
+        SELECT
+        job_definition_id,
+        MAX(id) AS latest_instance_id
+        FROM t_baize_flow_streaming_job_instance
+        GROUP BY job_definition_id
+        ) latest
+        ON latest.latest_instance_id = i.id
+        ) ji
+        ON ji.job_definition_id = d.id
+        <include refid="StreamingDefinitionWhere"/>
+        ORDER BY
+        COALESCE(ji.start_time, ji.submit_time, ji.create_time, d.update_time, d.create_time) DESC,
+        d.update_time DESC,
+        d.id DESC
+        LIMIT #{offset}, #{pageSize}
+    </select>
+
+    <select id="countPage" resultType="java.lang.Long">
+        SELECT COUNT(1)
+        FROM t_baize_flow_streaming_job_definition d
+        <include refid="StreamingDefinitionWhere"/>
+    </select>
+
+</mapper>

@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.apache</groupId>
+        <artifactId>apache</artifactId>
+        <version>25</version>
+    </parent>
+
+    <groupId>io.baize.flow</groupId>
+    <artifactId>baize-flow</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>Baize Flow</name>
+
+
+    <properties>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
+        <maven-assembly-plugin.version>3.3.0</maven-assembly-plugin.version>
+        <maven-release-plugin.version>2.5.3</maven-release-plugin.version>
+        <maven-javadoc-plugin.version>2.10.3</maven-javadoc-plugin.version>
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>
+        <maven-surefire-plugin.version>3.0.0-M6</maven-surefire-plugin.version>
+        <maven-dependency-plugin.version>3.1.1</maven-dependency-plugin.version>
+        <maven-shade-plugin.version>3.2.1</maven-shade-plugin.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <file_encoding>UTF-8</file_encoding>
+
+        <auto-service.version>1.0.1</auto-service.version>
+        <lombok.version>1.18.42</lombok.version>
+        <typesafe.version>1.4.3</typesafe.version>
+        <jsqlparser.version>4.9</jsqlparser.version>
+
+        <!-- Spring AI -->
+        <spring-ai.version>1.1.0</spring-ai.version>
+        <spring-ai-alibaba.version>1.1.0.0</spring-ai-alibaba.version>
+        <spring-ai-alibaba-extensions.version>1.1.2.0</spring-ai-alibaba-extensions.version>
+    </properties>
+
+
+    <modules>
+        <module>baize-flow-api</module>
+        <module>baize-flow-common</module>
+        <module>baize-flow-datasource-connection</module>
+        <module>baize-flow-datasource-plugins</module>
+        <module>baize-flow-alarm-plugins</module>
+        <module>baize-flow-ui</module>
+        <module>baize-flow-dao</module>
+        <module>baize-flow-dao-plugin</module>
+        <module>baize-flow-bom</module>
+        <module>baize-flow-spi</module>
+        <module>baize-flow-core</module>
+        <module>baize-flow-engine-client</module>
+        <module>baize-flow-dist</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-dao</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-common</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-connection</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-plugins</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-mysql</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-mysql-cdc</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-oracle</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-postgresql</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-doris</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-kingbase</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-dameng</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-alarm-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-alarm-webhook</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-alarm-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-datasource-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-dao-plugin-all</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-spi</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-engine-client</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>baize-flow-dao-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>${auto-service.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.typesafe</groupId>
+            <artifactId>config</artifactId>
+            <version>${typesafe.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.jsqlparser</groupId>
+            <artifactId>jsqlparser</artifactId>
+            <version>${jsqlparser.version}</version>
+        </dependency>
+
+
+
+    </dependencies>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>${maven-compiler-plugin.version}</version>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

@@ -1,0 +1,186 @@
+.datasource-empty-state {
+  position: relative;
+  overflow: hidden;
+  margin-top: 24px;
+  padding: 56px 24px 48px;
+  text-align: center;
+  border: 1px solid #eef0f3;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(24, 144, 255, 0.08), transparent 28%),
+    radial-gradient(circle at 80% 30%, rgba(114, 46, 209, 0.06), transparent 24%),
+    linear-gradient(180deg, #fcfcfd 0%, #f8fafc 100%);
+  box-shadow:
+    0 8px 24px rgba(31, 35, 41, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+
+  &__bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .bubble {
+    position: absolute;
+    display: block;
+    border-radius: 999px;
+    filter: blur(2px);
+    opacity: 0.8;
+    animation: bubbleFloat 6s ease-in-out infinite;
+  }
+
+  .bubble-1 {
+    top: 18%;
+    left: 18%;
+    width: 14px;
+    height: 14px;
+    background: rgba(24, 144, 255, 0.14);
+  }
+
+  .bubble-2 {
+    top: 24%;
+    right: 22%;
+    width: 10px;
+    height: 10px;
+    background: rgba(114, 46, 209, 0.14);
+    animation-delay: 1s;
+  }
+
+  .bubble-3 {
+    bottom: 22%;
+    right: 30%;
+    width: 18px;
+    height: 18px;
+    background: rgba(82, 196, 26, 0.12);
+    animation-delay: 2s;
+  }
+
+  &__emoji-wrap {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 18px;
+  }
+
+  &__emoji {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 96px;
+    height: 96px;
+    font-size: 52px;
+    border-radius: 50%;
+    background: linear-gradient(180deg, #ffffff 0%, #f5f7fa 100%);
+    box-shadow:
+      0 10px 30px rgba(24, 144, 255, 0.08),
+      0 2px 10px rgba(0, 0, 0, 0.04);
+    animation: emojiFloat 2.8s ease-in-out infinite;
+    user-select: none;
+  }
+
+  &__shadow {
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 54px;
+    height: 12px;
+    background: rgba(31, 35, 41, 0.08);
+    border-radius: 50%;
+    transform: translateX(-50%);
+    filter: blur(4px);
+    animation: shadowScale 2.8s ease-in-out infinite;
+  }
+
+  &__title {
+    position: relative;
+    z-index: 1;
+    margin-bottom: 10px;
+    color: #262626;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 30px;
+  }
+
+  &__desc {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+    color: #595959;
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  &__tip {
+    position: relative;
+    z-index: 1;
+    margin-top: 10px;
+    color: #8c8c8c;
+    font-size: 13px;
+    line-height: 22px;
+  }
+
+  &__actions {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+
+    .ant-btn {
+      height: 42px;
+      padding: 0 20px;
+      width: 25vh;
+      border-radius: 999px;
+      // box-shadow: 0 4px 10px rgba(22, 119, 255, 0.18);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+      &:hover {
+        transform: translateY(-1px);
+        // box-shadow: 0 12px 24px rgba(22, 119, 255, 0.22);
+      }
+    }
+  }
+}
+
+@keyframes emojiFloat {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-4px) rotate(-2deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(0deg);
+  }
+  75% {
+    transform: translateY(-4px) rotate(2deg);
+  }
+}
+
+@keyframes shadowScale {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    opacity: 0.18;
+  }
+  50% {
+    transform: translateX(-50%) scale(0.86);
+    opacity: 0.1;
+  }
+}
+
+@keyframes bubbleFloat {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+

@@ -1,0 +1,74 @@
+services:
+  baize-flow-api:
+    image: ${BAIZE_FLOW_API_IMAGE:-baize-flow-api:latest}
+    container_name: baize-flow-api
+    restart: unless-stopped
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-runtime
+
+    environment:
+      TZ: Asia/Shanghai
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx1024m}
+      APP_OPTS: ${APP_OPTS:-}
+
+      SERVER_PORT: 9527
+      SPRING_PROFILES_ACTIVE: mysql
+
+      BAIZE_FLOW_DATABASE_TYPE: mysql
+      BAIZE_FLOW_DATABASE_HOST: ${MYSQL_HOST:-host.docker.internal}
+      BAIZE_FLOW_DATABASE_PORT: ${MYSQL_PORT:-3306}
+      BAIZE_FLOW_DATABASE_NAME: ${MYSQL_DATABASE:-baize_flow}
+
+      SPRING_DATASOURCE_URL: "jdbc:mysql://${MYSQL_HOST:-host.docker.internal}:${MYSQL_PORT:-3306}/${MYSQL_DATABASE:-baize_flow}?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:?set MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:?set MYSQL_PASSWORD}
+
+      SPRING_FLYWAY_ENABLED: "true"
+
+      BAIZE_FLOW_DATASOURCE_MASTER_KEY: ${BAIZE_FLOW_DATASOURCE_MASTER_KEY:?set BAIZE_FLOW_DATASOURCE_MASTER_KEY}
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    expose:
+      - "9527"
+
+    volumes:
+      - baize-flow-logs:/opt/baize-flow/logs
+      - baize-flow-jdbc-drivers:/opt/baize-flow/jdbc-drivers
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - curl -fsS http://127.0.0.1:9527/actuator/health || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+  baize-flow:
+    image: ${BAIZE_FLOW_IMAGE:-baize-flow:latest}
+    container_name: baize-flow
+    restart: unless-stopped
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-runtime
+
+    healthcheck:
+      disable: true
+
+    depends_on:
+      baize-flow-api:
+        condition: service_healthy
+
+    ports:
+      - "${BAIZE_FLOW_PORT:-9001}:80"
+
+volumes:
+  baize-flow-logs:
+  baize-flow-jdbc-drivers:

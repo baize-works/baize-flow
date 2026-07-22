@@ -1,0 +1,110 @@
+package io.baize.flow.api.service.application;
+
+import jakarta.annotation.Resource;
+import org.apache.commons.lang3.StringUtils;
+import io.baize.flow.api.service.JobScheduleService;
+import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.dao.entity.JobSchedule;
+import io.baize.flow.spi.bean.dto.SeaTunnelJobScheduleDTO;
+import io.baize.flow.spi.bean.dto.command.BatchJobSaveCommand;
+import io.baize.flow.spi.bean.dto.command.JobDefinitionSaveCommand;
+import io.baize.flow.spi.bean.dto.config.JobScheduleConfig;
+import org.quartz.SchedulerException;
+import org.springframework.stereotype.Service;
+
+@Service
+public class JobScheduleApplicationService {
+
+    @Resource
+    private JobScheduleService jobScheduleService;
+
+    public void saveOrUpdateSchedule(Long jobDefinitionId, BatchJobSaveCommand command) {
+        if (jobDefinitionId == null || command == null) {
+            return;
+        }
+
+        JobScheduleConfig scheduleConfig = command.getSchedule();
+        if (shouldRemoveSchedule(scheduleConfig)) {
+            removeSchedule(jobDefinitionId);
+            return;
+        }
+
+        ScheduleStatusEnum scheduleStatus = scheduleConfig.resolveScheduleStatus();
+        if (scheduleStatus == null) {
+            throw new RuntimeException("Invalid scheduleRunType: " + scheduleConfig.getScheduleRunType());
+        }
+
+        JobSchedule existing = jobScheduleService.getByTaskDefinitionId(jobDefinitionId);
+
+        SeaTunnelJobScheduleDTO scheduleDTO = buildScheduleDTO(
+                jobDefinitionId,
+                scheduleConfig,
+                scheduleStatus,
+                existing
+        );
+
+        try {
+            Long scheduleId = saveSchedule(scheduleDTO, existing);
+
+            // 先同步 Quartz，避免残留旧 trigger
+            refreshQuartzState(scheduleId, scheduleStatus);
+
+            // 再把最终业务状态回写成前端目标状态，避免被 startSchedule/stopSchedule 中间覆盖
+            boolean updated = jobScheduleService.updateScheduleStatus(scheduleId, scheduleStatus);
+            if (!updated) {
+                throw new RuntimeException("Failed to update final schedule status");
+            }
+        } catch (SchedulerException e) {
+            throw new RuntimeException("Failed to save or update schedule", e);
+        }
+    }
+
+    public void removeSchedule(Long jobDefinitionId) {
+        jobScheduleService.removeByDefinitionId(jobDefinitionId);
+    }
+
+    public JobSchedule getByTaskDefinitionId(Long jobDefinitionId) {
+        return jobScheduleService.getByTaskDefinitionId(jobDefinitionId);
+    }
+
+    private boolean shouldRemoveSchedule(JobScheduleConfig scheduleConfig) {
+        return scheduleConfig == null || StringUtils.isBlank(scheduleConfig.getCronExpression());
+    }
+
+    private SeaTunnelJobScheduleDTO buildScheduleDTO(Long jobDefinitionId,
+                                                     JobScheduleConfig scheduleConfig,
+                                                     ScheduleStatusEnum scheduleStatus,
+                                                     JobSchedule existing) {
+        SeaTunnelJobScheduleDTO dto = new SeaTunnelJobScheduleDTO();
+        dto.setJobDefinitionId(jobDefinitionId);
+        dto.setCronExpression(scheduleConfig.getCronExpression() == null
+                ? null
+                : scheduleConfig.getCronExpression().trim());
+        dto.setScheduleStatus(scheduleStatus);
+        dto.setScheduleConfig(scheduleConfig);
+
+        if (existing != null) {
+            dto.setId(existing.getId());
+        }
+        return dto;
+    }
+
+    private Long saveSchedule(SeaTunnelJobScheduleDTO scheduleDTO, JobSchedule existing)
+            throws SchedulerException {
+        if (existing == null) {
+            return jobScheduleService.createTaskSchedule(scheduleDTO);
+        }
+        jobScheduleService.updateTaskSchedule(scheduleDTO);
+        return existing.getId();
+    }
+
+    private void refreshQuartzState(Long scheduleId, ScheduleStatusEnum scheduleStatus)
+            throws SchedulerException {
+        // 先停再启，避免 Quartz 中残留旧 trigger
+        jobScheduleService.stopSchedule(scheduleId);
+
+        if (scheduleStatus.shouldStartQuartz()) {
+            jobScheduleService.startSchedule(scheduleId);
+        }
+    }
+}

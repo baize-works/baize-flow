@@ -1,0 +1,36 @@
+package io.baize.flow.spi.bean.dto;
+
+import lombok.Data;
+
+@Data
+public class TimeVariableSaveReq {
+
+    private Long id;
+
+    private String paramName;
+
+    private String paramDesc;
+
+    /**
+     * SYSTEM / CUSTOM
+     * 前端新增一般传 CUSTOM
+     */
+    private String variableSource;
+
+    /**
+     * FIXED / DYNAMIC
+     */
+    private String valueType;
+
+    private String timeFormat;
+
+    private String defaultValue;
+
+    private String expression;
+
+    private String exampleValue;
+
+    private Boolean enabled;
+
+    private String remark;
+}

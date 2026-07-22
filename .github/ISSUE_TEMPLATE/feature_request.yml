@@ -1,0 +1,46 @@
+name: Feature request
+description: Suggest an improvement or new capability for Baize Flow
+title: "[Feature] "
+labels: [enhancement]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve Baize Flow. Please explain the user problem and the proposed outcome.
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem statement
+      description: What problem or limitation are you trying to solve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the desired behavior or user experience.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - UI / UX
+        - Backend API
+        - Datasource / Connector
+        - Job execution
+        - Monitoring / Logs
+        - Documentation
+        - CI / Release
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context

@@ -1,0 +1,134 @@
+services:
+  mysql:
+    image: mysql:8.0.39
+    container_name: baize-flow-mysql
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-change_me}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-baize_flow}
+      MYSQL_USER: ${MYSQL_USER:-seatunnel}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-change_me}
+      TZ: Asia/Shanghai
+
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
+      - --default-time-zone=+08:00
+
+    ports:
+      - "${MYSQL_HOST_PORT:-3306}:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'MYSQL_PWD="$${MYSQL_ROOT_PASSWORD}" mysqladmin ping -h 127.0.0.1 -uroot --silent'
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+    networks:
+      - baize-flow-network
+
+
+  baize-flow-api:
+    image: ${BAIZE_FLOW_API_IMAGE:-baize-flow-api:latest}
+    container_name: baize-flow-api
+    restart: unless-stopped
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: backend-runtime
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    environment:
+      TZ: Asia/Shanghai
+
+      JAVA_OPTS: ${JAVA_OPTS:--Xms512m -Xmx1024m}
+
+      APP_OPTS: ${APP_OPTS:-}
+
+      SERVER_PORT: 9527
+
+      SPRING_PROFILES_ACTIVE: mysql
+
+      BAIZE_FLOW_DATABASE_TYPE: mysql
+      BAIZE_FLOW_DATABASE_HOST: mysql
+      BAIZE_FLOW_DATABASE_PORT: 3306
+      BAIZE_FLOW_DATABASE_NAME: ${MYSQL_DATABASE:-baize_flow}
+
+      SPRING_DATASOURCE_URL: "jdbc:mysql://mysql:3306/${MYSQL_DATABASE:-baize_flow}?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true"
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:-seatunnel}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASSWORD:-change_me}
+
+      SPRING_FLYWAY_ENABLED: "true"
+
+      BAIZE_FLOW_DATASOURCE_MASTER_KEY: ${BAIZE_FLOW_DATASOURCE_MASTER_KEY:?Please set BAIZE_FLOW_DATASOURCE_MASTER_KEY in .env}
+
+    expose:
+      - "9527"
+
+    volumes:
+      - baize-flow-logs:/opt/baize-flow/logs
+      - baize-flow-jdbc-drivers:/opt/baize-flow/jdbc-drivers
+
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - 'bash -c "</dev/tcp/127.0.0.1/9527"'
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 30s
+
+    networks:
+      - baize-flow-network
+
+
+  baize-flow:
+    image: ${BAIZE_FLOW_IMAGE:-baize-flow:latest}
+    container_name: baize-flow
+    restart: unless-stopped
+
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: frontend-runtime
+
+    healthcheck:
+      disable: true
+
+    depends_on:
+      baize-flow-api:
+        condition: service_healthy
+
+    ports:
+      - "${BAIZE_FLOW_PORT:-9527}:80"
+
+    networks:
+      - baize-flow-network
+
+
+volumes:
+  mysql-data:
+    name: baize-flow-mysql-data
+
+  baize-flow-logs:
+    name: baize-flow-logs
+
+  baize-flow-jdbc-drivers:
+    name: baize-flow-jdbc-drivers
+
+
+networks:
+  baize-flow-network:
+    name: baize-flow-network
+    driver: bridge

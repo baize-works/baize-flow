@@ -1,0 +1,12 @@
+*
+
+!Dockerfile
+!.dockerignore
+
+!docker/
+!docker/nginx/
+!docker/nginx/default.conf
+
+!baize-flow-dist/
+!baize-flow-dist/target/
+!baize-flow-dist/target/baize-flow-*.tar.gz

@@ -1,0 +1,550 @@
+import {
+  dataSourceCatalogApi,
+  fetchDataSourceOptions,
+} from "@/pages/data-source/service";
+import { message } from "antd";
+import { Table2 } from "lucide-react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+
+export interface SourcePanelLogicProps {
+  selectedNode: any;
+  onNodeDataChange: (nodeId: string, newData: any) => void;
+  qualityDetailRef: any;
+  scheduleConfig: any;
+}
+
+export function useSourcePanelLogic({
+  selectedNode,
+  onNodeDataChange,
+  qualityDetailRef,
+  scheduleConfig,
+}: SourcePanelLogicProps) {
+  const nodeId = selectedNode?.id;
+  const nodeData = selectedNode?.data || {};
+  const config = nodeData?.config || {};
+  const meta = nodeData?.meta || {};
+
+  const title = nodeData?.title || "来源节点";
+  const dbType = nodeData?.dbType || "MYSQL";
+  const description = nodeData?.description || "读取源端数据";
+
+  const dataSourceId = config?.dataSourceId ? String(config.dataSourceId) : "";
+  const readMode = config?.readMode || "table";
+  const table = config?.table || undefined;
+  const sql = config?.sql || "";
+  const extraParams = config?.extraParams || [];
+
+  const [dataSourceOptions, setDataSourceOptions] = useState<any[]>([]);
+  const [tableOptions, setTableOptions] = useState<any[]>([]);
+  const [tableLoading, setTableLoading] = useState(false);
+
+  const [sqlPopoverOpen, setSqlPopoverOpen] = useState(false);
+  const [resolvePopoverOpen, setResolvePopoverOpen] = useState(false);
+  const [selectedSqlTable, setSelectedSqlTable] = useState<string>();
+  const [generateSqlLoading, setGenerateSqlLoading] = useState(false);
+  const [resolveSqlLoading, setResolveSqlLoading] = useState(false);
+  const [resolvedSqlPreview, setResolvedSqlPreview] = useState("");
+  const [viewLoading, setViewLoading] = useState(false);
+
+  const resetSchemaMeta = {
+    outputSchema: [],
+    schemaStatus: "idle",
+    schemaError: "",
+  };
+
+  const updateNode = useCallback(
+    (
+      configPatch?: Record<string, any>,
+      extraNodeDataPatch?: Record<string, any>,
+      metaPatch?: Record<string, any>
+    ) => {
+      if (!nodeId) return;
+
+      onNodeDataChange(nodeId, {
+        ...nodeData,
+        ...(extraNodeDataPatch || {}),
+        config: {
+          ...(nodeData?.config || {}),
+          ...(configPatch || {}),
+        },
+        meta: {
+          ...(nodeData?.meta || {}),
+          ...(metaPatch || {}),
+        },
+      });
+    },
+    [nodeId, nodeData, onNodeDataChange]
+  );
+
+  const currentDataSource = useMemo(() => {
+    return dataSourceOptions.find(
+      (item: any) => String(item.value) === String(dataSourceId)
+    );
+  }, [dataSourceId, dataSourceOptions]);
+
+  /**
+   * 只根据 dbType 加载数据源列表。
+   */
+  useEffect(() => {
+    const loadDataSourceOptions = async () => {
+      if (!dbType) {
+        setDataSourceOptions([]);
+        return;
+      }
+
+      try {
+        const res = await fetchDataSourceOptions(dbType);
+        const list = Array.isArray(res?.data) ? res.data : [];
+
+        const options = list.map((item: any) => ({
+          label: item?.label,
+          value: String(item?.value),
+          dbType: item?.dbType,
+        }));
+
+        setDataSourceOptions(options);
+      } catch (error) {
+        console.error("load data source options error", error);
+        setDataSourceOptions([]);
+      }
+    };
+
+    loadDataSourceOptions();
+  }, [dbType]);
+
+  /**
+   * 根据当前 dataSourceId 回填节点标题和 dbType。
+   *
+   * 注意：
+   * 这里虽然依赖 updateNode，但只在 title/dbType 真正不一致时才更新，
+   * 不会引发表列表接口重复加载。
+   */
+  useEffect(() => {
+    if (!dataSourceId || dataSourceOptions.length === 0) return;
+
+    const matched = dataSourceOptions.find(
+      (item: any) => String(item.value) === String(dataSourceId)
+    );
+
+    if (!matched) return;
+
+    const nextTitle = matched?.label || nodeData?.title;
+    const nextDbType = matched?.dbType || nodeData?.dbType || "MYSQL";
+
+    if (nodeData?.title === nextTitle && nodeData?.dbType === nextDbType) {
+      return;
+    }
+
+    updateNode(undefined, {
+      title: nextTitle,
+      dbType: nextDbType,
+    });
+  }, [
+    dataSourceId,
+    dataSourceOptions,
+    nodeData?.title,
+    nodeData?.dbType,
+    updateNode,
+  ]);
+
+  /**
+   * 表列表只应该由 dataSourceId 决定。
+   *
+   * 关键修复点：
+   * 不要把 table / updateNode / selectedNode / config 放进依赖里。
+   * 否则切换 startupMode、extraParams、schemaStatus 都可能导致重新拉表。
+   */
+  useEffect(() => {
+    const loadTableOptions = async () => {
+      if (!dataSourceId) {
+        setTableOptions([]);
+        return;
+      }
+
+      setTableLoading(true);
+
+      try {
+        const res = await dataSourceCatalogApi.listTable(dataSourceId);
+        const list = Array.isArray(res?.data) ? res.data : [];
+
+        const options = list.map((item: any) => {
+          const text = item?.value ?? String(item?.value ?? "");
+
+          return {
+            label: (
+              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                <span
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 20,
+                    height: 20,
+                    borderRadius: 6,
+                    background: "rgba(148, 163, 184, 0.12)",
+                    color: "#64748B",
+                    flexShrink: 0,
+                  }}
+                >
+                  <Table2 size={12} />
+                </span>
+                <span style={{ color: "#344054" }}>{text}</span>
+              </div>
+            ),
+            value: String(item?.value ?? ""),
+            rawLabel: text,
+            description: item?.description,
+          };
+        });
+
+        setTableOptions(options);
+      } catch (error) {
+        console.error("load table options error", error);
+        setTableOptions([]);
+      } finally {
+        setTableLoading(false);
+      }
+    };
+
+    loadTableOptions();
+  }, [dataSourceId]);
+
+  /**
+   * 单独校验当前已选 table 是否还存在。
+   *
+   * 这样 table 变化不会触发 listTable 接口，
+   * 只做本地 options 校验。
+   */
+  useEffect(() => {
+    if (!table) return;
+    if (tableOptions.length === 0) return;
+
+    const exists = tableOptions.some(
+      (item: any) => String(item.value) === String(table)
+    );
+
+    if (exists) return;
+
+    updateNode({ table: undefined, tableNames: [] });
+  }, [table, tableOptions, updateNode]);
+
+  const handleDataSourceChange = useCallback(
+    (value: string, option: any) => {
+      setSelectedSqlTable(undefined);
+      setResolvedSqlPreview("");
+      setSqlPopoverOpen(false);
+      setResolvePopoverOpen(false);
+
+      updateNode(
+        {
+          dataSourceId: value,
+          table: undefined,
+          tableNames: [],
+          sql: "",
+        },
+        {
+          title: option?.label || nodeData?.title,
+          dbType: option?.dbType || nodeData?.dbType || "MYSQL",
+        },
+        resetSchemaMeta
+      );
+    },
+    [nodeData?.title, nodeData?.dbType, updateNode]
+  );
+
+  /**
+   * 兼容旧的 JDBC SourcePanel。
+   * CDC SourcePanel 当前已经不用这个方法。
+   */
+  const handleReadModeChange = useCallback(
+    (value: string) => {
+      updateNode(
+        {
+          readMode: value,
+          ...(value === "table"
+            ? { sql: "" }
+            : { table: undefined, tableNames: [] }),
+        },
+        undefined,
+        resetSchemaMeta
+      );
+    },
+    [updateNode]
+  );
+
+  const scheduleParamsList = scheduleConfig?.paramsList || [];
+
+  /**
+   * CDC 当前固定按 table 解析字段。
+   * 这里不再根据 readMode 去判断 SQL。
+   */
+  const resolveSourceOutputSchema = useCallback(async () => {
+    const currentDataSourceId = dataSourceId;
+    const currentTable = table;
+
+    if (!currentDataSourceId) {
+      message.warning("请先选择来源数据源");
+      return [];
+    }
+
+    if (!currentTable) {
+      message.warning("请先选择来源表");
+      return [];
+    }
+
+    try {
+      setTableLoading(true);
+
+      updateNode(undefined, undefined, {
+        schemaStatus: "loading",
+        schemaError: "",
+      });
+
+      const params = {
+        read_mode: "table",
+        table_path: currentTable,
+        query: "",
+        paramsList: scheduleConfig?.paramsList || [],
+      };
+
+      const resp = await dataSourceCatalogApi.listColumn(
+        currentDataSourceId,
+        params
+      );
+
+      if (resp?.code !== 0) {
+        const errorMsg = resp?.message || "字段解析失败";
+
+        updateNode(undefined, undefined, {
+          outputSchema: [],
+          schemaStatus: "error",
+          schemaError: errorMsg,
+        });
+
+        message.error(errorMsg);
+        return [];
+      }
+
+      const rawColumns = resp?.data || [];
+
+      const outputSchema = rawColumns.map((item: any) => ({
+        name: item?.fieldName || "",
+        type: item?.fieldType || "",
+        nullable: item?.isNullable,
+        comment: item?.fieldComment || "",
+        originFieldName: item?.fieldName || "",
+      }));
+
+      updateNode(undefined, undefined, {
+        outputSchema,
+        schemaStatus: "success",
+        schemaError: "",
+      });
+
+      return outputSchema;
+    } catch (error: any) {
+      console.error("resolve source output schema error", error);
+
+      updateNode(undefined, undefined, {
+        outputSchema: [],
+        schemaStatus: "error",
+        schemaError: "字段解析失败",
+      });
+
+      message.error("字段解析失败");
+      return [];
+    } finally {
+      setTableLoading(false);
+    }
+  }, [dataSourceId, table, updateNode, scheduleParamsList]);
+
+  /**
+   * CDC 当前固定按 table 预览。
+   */
+  const handlePreview = useCallback(async () => {
+    if (!dataSourceId) {
+      message.warning("请选择数据源");
+      return;
+    }
+
+    if (!table) {
+      message.warning("请选择来源表");
+      return;
+    }
+
+    const requestParams = {
+      read_mode: "table",
+      table_path: table,
+      extra_params: extraParams,
+      paramsList: scheduleConfig?.paramsList || [],
+    };
+
+    try {
+      setViewLoading(true);
+
+      const data = await dataSourceCatalogApi.getTop20Data(
+        dataSourceId,
+        requestParams
+      );
+
+      if (data?.code === 0) {
+        qualityDetailRef.current?.onOpen(true, data);
+      } else {
+        message.error(data?.message || "预览失败");
+      }
+    } catch (error) {
+      console.error("preview source data error", error);
+      message.error("预览失败");
+    } finally {
+      setViewLoading(false);
+    }
+  }, [
+    dataSourceId,
+    table,
+    extraParams,
+    qualityDetailRef,
+    scheduleParamsList,
+  ]);
+
+  const handleStatistics = useCallback(() => {
+    console.log("statistics source data", {
+      nodeId,
+      dataSourceId,
+      readMode,
+      table,
+      sql,
+      extraParams,
+    });
+  }, [nodeId, dataSourceId, readMode, table, sql, extraParams]);
+
+  /**
+   * 以下 SQL 相关逻辑暂时保留，用于兼容旧组件。
+   * CDC SourcePanel 不再调用这些方法。
+   */
+  const handleGenerateSql = useCallback(async () => {
+    if (!dataSourceId) {
+      message.warning("请先选择数据源");
+      return;
+    }
+
+    if (!selectedSqlTable) {
+      message.warning("请选择表");
+      return;
+    }
+
+    try {
+      setGenerateSqlLoading(true);
+
+      const res = await dataSourceCatalogApi.buildSqlTemplate(dataSourceId, {
+        read_mode: "table",
+        table_path: selectedSqlTable,
+      });
+
+      if (res?.code !== 0) {
+        return;
+      }
+
+      const nextSql = res?.data || "";
+      if (!nextSql) {
+        message.warning("未生成有效 SQL");
+        return;
+      }
+
+      updateNode({ sql: nextSql }, undefined, resetSchemaMeta);
+      setSqlPopoverOpen(false);
+      message.success("SQL 生成成功");
+    } catch (error) {
+      console.error("generate sql error", error);
+    } finally {
+      setGenerateSqlLoading(false);
+    }
+  }, [dataSourceId, selectedSqlTable, updateNode]);
+
+  const handleResolveSqlPreview = useCallback(async () => {
+    if (!dataSourceId) {
+      message.warning("请先选择数据源");
+      return;
+    }
+
+    if (!sql) {
+      message.warning("请先输入 SQL");
+      return;
+    }
+
+    try {
+      setResolveSqlLoading(true);
+
+      const res = await dataSourceCatalogApi.resolveSql(dataSourceId, {
+        query: sql,
+        read_mode: readMode,
+        extra_params: extraParams,
+        paramsList: scheduleConfig?.paramsList || [],
+      });
+
+      if (res?.code !== 0) {
+        message.error(res?.message || "SQL 变量解析失败");
+        return;
+      }
+
+      setResolvedSqlPreview(res?.data || "");
+    } catch (error) {
+      console.error("resolve sql error", error);
+      message.error("SQL 变量解析失败");
+    } finally {
+      setResolveSqlLoading(false);
+    }
+  }, [dataSourceId, sql, readMode, extraParams, scheduleParamsList]);
+
+  const handleOpenResolvePopover = useCallback(
+    async (open: boolean) => {
+      setResolvePopoverOpen(open);
+
+      if (open && sql) {
+        await handleResolveSqlPreview();
+      }
+    },
+    [sql, handleResolveSqlPreview]
+  );
+
+  const handleResolveColumns = useCallback(async () => {
+    await resolveSourceOutputSchema();
+  }, [resolveSourceOutputSchema]);
+
+  return {
+    nodeData,
+    meta,
+    title,
+    dbType,
+    description,
+    dataSourceId,
+    readMode,
+    table,
+    sql,
+    extraParams,
+    currentDataSource,
+
+    dataSourceOptions,
+    tableOptions,
+    tableLoading,
+
+    sqlPopoverOpen,
+    setSqlPopoverOpen,
+    resolvePopoverOpen,
+    selectedSqlTable,
+    setSelectedSqlTable,
+    generateSqlLoading,
+    resolveSqlLoading,
+    resolvedSqlPreview,
+    viewLoading,
+
+    updateNode,
+    handleDataSourceChange,
+    handleReadModeChange,
+    handlePreview,
+    handleStatistics,
+    handleGenerateSql,
+    handleResolveSqlPreview,
+    handleOpenResolvePopover,
+    handleResolveColumns,
+  };
+}

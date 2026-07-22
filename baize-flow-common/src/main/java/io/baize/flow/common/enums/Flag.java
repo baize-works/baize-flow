@@ -1,0 +1,30 @@
+package io.baize.flow.common.enums;
+
+import com.baomidou.mybatisplus.annotation.EnumValue;
+
+
+public enum Flag {
+    /**
+     * 0 no
+     * 1 yes
+     */
+    NO(0, "no"),
+    YES(1, "yes");
+
+    Flag(int code, String descp) {
+        this.code = code;
+        this.descp = descp;
+    }
+
+    @EnumValue
+    private final int code;
+    private final String descp;
+
+    public int getCode() {
+        return code;
+    }
+
+    public String getDescp() {
+        return descp;
+    }
+}

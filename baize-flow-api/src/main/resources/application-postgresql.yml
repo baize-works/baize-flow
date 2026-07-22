@@ -1,0 +1,19 @@
+spring:
+  config:
+    activate:
+      on-profile: postgresql
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "${SPRING_DATASOURCE_URL:jdbc:postgresql://${BAIZE_FLOW_DATABASE_HOST:127.0.0.1}:${BAIZE_FLOW_DATABASE_PORT:5432}/${BAIZE_FLOW_DATABASE_NAME:baize_flow}}"
+    username: ${SPRING_DATASOURCE_USERNAME:seatunnel}
+    password: ${SPRING_DATASOURCE_PASSWORD:change_me}
+
+  quartz:
+    properties:
+      org.quartz.jobStore.driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
+
+seatunnel:
+  web:
+    database:
+      type: postgresql
