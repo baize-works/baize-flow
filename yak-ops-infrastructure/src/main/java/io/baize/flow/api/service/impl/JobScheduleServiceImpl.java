@@ -3,7 +3,7 @@ package io.baize.flow.api.service.impl;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import io.baize.flow.api.quartz.QuartzJob;
+import io.baize.flow.infrastructure.scheduler.QuartzJob;
 import io.baize.flow.api.service.JobScheduleService;
 import io.baize.flow.domain.enums.ScheduleStatusEnum;
 import io.baize.flow.common.utils.ConvertUtil;
