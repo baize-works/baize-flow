@@ -1,5 +1,5 @@
--- Baize Flow MySQL database reset script
--- WARNING: this script deletes the entire Baize Flow database.
+-- Yak Ops MySQL database reset script
+-- WARNING: this script deletes the entire Yak Ops database.
 --
 -- This script intentionally creates only an empty database. Do not add
 -- CREATE TABLE, ALTER TABLE, or INSERT statements here; Flyway migration

@@ -41,6 +41,6 @@ header:
     - '**/.gitkeep'
     - '**/com/typesafe/config/**'
     - 'seatunnel-main-repository/**'
-    - 'baize-flow-dist/release-docs/**'
+    - 'yak-ops-dist/release-docs/**'
 
   comment: on-failure

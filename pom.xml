@@ -10,11 +10,11 @@
     </parent>
 
     <groupId>io.baize.flow</groupId>
-    <artifactId>baize-flow</artifactId>
+    <artifactId>yak-ops</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
 
-    <name>Baize Flow</name>
+    <name>Yak Ops</name>
 
 
     <properties>
@@ -45,131 +45,131 @@
 
 
     <modules>
-        <module>baize-flow-api</module>
-        <module>baize-flow-common</module>
-        <module>baize-flow-datasource-connection</module>
-        <module>baize-flow-datasource-plugins</module>
-        <module>baize-flow-alarm-plugins</module>
-        <module>baize-flow-ui</module>
-        <module>baize-flow-dao</module>
-        <module>baize-flow-dao-plugin</module>
-        <module>baize-flow-bom</module>
-        <module>baize-flow-spi</module>
-        <module>baize-flow-core</module>
-        <module>baize-flow-engine-client</module>
-        <module>baize-flow-dist</module>
+        <module>yak-ops-api</module>
+        <module>yak-ops-common</module>
+        <module>yak-ops-datasource-connection</module>
+        <module>yak-ops-datasource-plugins</module>
+        <module>yak-ops-alarm-plugins</module>
+        <module>yak-ops-ui</module>
+        <module>yak-ops-dao</module>
+        <module>yak-ops-dao-plugin</module>
+        <module>yak-ops-bom</module>
+        <module>yak-ops-spi</module>
+        <module>yak-ops-core</module>
+        <module>yak-ops-engine-client</module>
+        <module>yak-ops-dist</module>
     </modules>
 
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-dao</artifactId>
+                <artifactId>yak-ops-dao</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-common</artifactId>
+                <artifactId>yak-ops-common</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-api</artifactId>
+                <artifactId>yak-ops-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-connection</artifactId>
+                <artifactId>yak-ops-datasource-connection</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-plugins</artifactId>
+                <artifactId>yak-ops-datasource-plugins</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-api</artifactId>
+                <artifactId>yak-ops-datasource-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-mysql</artifactId>
+                <artifactId>yak-ops-datasource-mysql</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-mysql-cdc</artifactId>
+                <artifactId>yak-ops-datasource-mysql-cdc</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-oracle</artifactId>
+                <artifactId>yak-ops-datasource-oracle</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-postgresql</artifactId>
+                <artifactId>yak-ops-datasource-postgresql</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-doris</artifactId>
+                <artifactId>yak-ops-datasource-doris</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-kingbase</artifactId>
+                <artifactId>yak-ops-datasource-kingbase</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-dameng</artifactId>
+                <artifactId>yak-ops-datasource-dameng</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-alarm-api</artifactId>
+                <artifactId>yak-ops-alarm-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-alarm-webhook</artifactId>
+                <artifactId>yak-ops-alarm-webhook</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-alarm-all</artifactId>
+                <artifactId>yak-ops-alarm-all</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-datasource-all</artifactId>
+                <artifactId>yak-ops-datasource-all</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-dao-plugin-all</artifactId>
+                <artifactId>yak-ops-dao-plugin-all</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-core</artifactId>
+                <artifactId>yak-ops-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-spi</artifactId>
+                <artifactId>yak-ops-spi</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-engine-client</artifactId>
+                <artifactId>yak-ops-engine-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
-                <artifactId>baize-flow-dao-api</artifactId>
+                <artifactId>yak-ops-dao-api</artifactId>
                 <version>${project.version}</version>
             </dependency>
         </dependencies>

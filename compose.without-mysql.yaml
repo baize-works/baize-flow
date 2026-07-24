@@ -1,7 +1,7 @@
 services:
-  baize-flow-api:
-    image: ${BAIZE_FLOW_API_IMAGE:-baize-flow-api:latest}
-    container_name: baize-flow-api
+  yak-ops-api:
+    image: ${YAK_OPS_API_IMAGE:-yak-ops-api:latest}
+    container_name: yak-ops-api
     restart: unless-stopped
 
     build:
@@ -17,10 +17,10 @@ services:
       SERVER_PORT: 9527
       SPRING_PROFILES_ACTIVE: mysql
 
-      BAIZE_FLOW_DATABASE_TYPE: mysql
-      BAIZE_FLOW_DATABASE_HOST: ${MYSQL_HOST:-host.docker.internal}
-      BAIZE_FLOW_DATABASE_PORT: ${MYSQL_PORT:-3306}
-      BAIZE_FLOW_DATABASE_NAME: ${MYSQL_DATABASE:-baize_flow}
+      YAK_OPS_DATABASE_TYPE: mysql
+      YAK_OPS_DATABASE_HOST: ${MYSQL_HOST:-host.docker.internal}
+      YAK_OPS_DATABASE_PORT: ${MYSQL_PORT:-3306}
+      YAK_OPS_DATABASE_NAME: ${MYSQL_DATABASE:-baize_flow}
 
       SPRING_DATASOURCE_URL: "jdbc:mysql://${MYSQL_HOST:-host.docker.internal}:${MYSQL_PORT:-3306}/${MYSQL_DATABASE:-baize_flow}?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true"
       SPRING_DATASOURCE_USERNAME: ${MYSQL_USER:?set MYSQL_USER}
@@ -28,7 +28,7 @@ services:
 
       SPRING_FLYWAY_ENABLED: "true"
 
-      BAIZE_FLOW_DATASOURCE_MASTER_KEY: ${BAIZE_FLOW_DATASOURCE_MASTER_KEY:?set BAIZE_FLOW_DATASOURCE_MASTER_KEY}
+      YAK_OPS_DATASOURCE_MASTER_KEY: ${YAK_OPS_DATASOURCE_MASTER_KEY:?set YAK_OPS_DATASOURCE_MASTER_KEY}
 
     extra_hosts:
       - "host.docker.internal:host-gateway"
@@ -37,8 +37,8 @@ services:
       - "9527"
 
     volumes:
-      - baize-flow-logs:/opt/baize-flow/logs
-      - baize-flow-jdbc-drivers:/opt/baize-flow/jdbc-drivers
+      - yak-ops-logs:/opt/yak-ops/logs
+      - yak-ops-jdbc-drivers:/opt/yak-ops/jdbc-drivers
 
     healthcheck:
       test:
@@ -49,9 +49,9 @@ services:
       retries: 12
       start_period: 30s
 
-  baize-flow:
-    image: ${BAIZE_FLOW_IMAGE:-baize-flow:latest}
-    container_name: baize-flow
+  yak-ops:
+    image: ${YAK_OPS_IMAGE:-yak-ops:latest}
+    container_name: yak-ops
     restart: unless-stopped
 
     build:
@@ -63,12 +63,12 @@ services:
       disable: true
 
     depends_on:
-      baize-flow-api:
+      yak-ops-api:
         condition: service_healthy
 
     ports:
-      - "${BAIZE_FLOW_PORT:-9001}:80"
+      - "${YAK_OPS_PORT:-9001}:80"
 
 volumes:
-  baize-flow-logs:
-  baize-flow-jdbc-drivers:
+  yak-ops-logs:
+  yak-ops-jdbc-drivers:

@@ -1,5 +1,5 @@
--- Baize Flow MySQL full initialization script
--- WARNING: this script drops and recreates all Baize Flow and Quartz tables.
+-- Yak Ops MySQL full initialization script
+-- WARNING: this script drops and recreates all Yak Ops and Quartz tables.
 
 CREATE DATABASE IF NOT EXISTS `baize_flow`
     DEFAULT CHARACTER SET utf8mb4
@@ -11,7 +11,7 @@ SET NAMES utf8mb4;
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ============================================================
--- 1. Baize Flow business tables
+-- 1. Yak Ops business tables
 -- ============================================================
 
 DROP TABLE IF EXISTS `t_baize_flow_connector_param_meta`;
