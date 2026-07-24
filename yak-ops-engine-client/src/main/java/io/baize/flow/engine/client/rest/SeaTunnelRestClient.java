@@ -2,6 +2,15 @@ package io.baize.flow.engine.client.rest;
 
 import io.baize.flow.engine.client.modal.SeaTunnelClientAuth;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestClientResponseException;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 import java.util.Map;
@@ -9,13 +18,21 @@ import java.util.Map;
 @SuppressWarnings({"unchecked", "rawtypes"})
 @Service
 public class SeaTunnelRestClient {
+    private static final String REST_ROOT = "/hazelcast/rest";
+    private final RestTemplate restTemplate;
+    private final SeaTunnelClientResolver resolver;
+
+    public SeaTunnelRestClient(RestTemplate restTemplate, SeaTunnelClientResolver resolver) {
+        this.restTemplate = restTemplate;
+        this.resolver = resolver;
+    }
 
     public Map overview(Long clientId, Map<String, String> tags) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/overview", tags, Map.class);
     }
 
     public Map overview(String baseUrl, Map<String, String> tags) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(baseUrl, null, tags, null, "/maps/overview", Map.class);
     }
 
     public Map overview(
@@ -23,52 +40,52 @@ public class SeaTunnelRestClient {
             String contextPath,
             Map<String, String> tags,
             SeaTunnelClientAuth auth) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(baseUrl, contextPath, tags, auth, "/maps/overview", Map.class);
     }
 
     public List systemMonitoringInformation(
             String baseUrl,
             String contextPath,
             SeaTunnelClientAuth auth) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(baseUrl, contextPath, Map.of(), auth, "/maps/system-monitoring-information", List.class);
     }
 
     public List runningJobs(Long clientId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/running-jobs", Map.of(), List.class);
     }
 
     public Map jobInfo(Long clientId, String jobId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/job-info/" + jobId, Map.of(), Map.class);
     }
 
     public List finishedJobs(Long clientId, String state) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/finished-jobs", state == null ? Map.of() : Map.of("state", state), List.class);
     }
 
     public List systemMonitoringInformation(Long clientId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/system-monitoring-information", Map.of(), List.class);
     }
 
     public String logs(
             Long clientId,
             String jobIdOrNull,
             String formatOrNull) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/logs", query("jobId", jobIdOrNull, "format", formatOrNull), String.class);
     }
 
     public String jobLogs(
             Long clientId,
             String engineJobId,
             String formatOrNull) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/job-logs/" + engineJobId, query("format", formatOrNull), String.class);
     }
 
     public String nodeLogs(Long clientId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/node-logs", Map.of(), String.class);
     }
 
     public String metrics(Long clientId, boolean openMetrics) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/metrics", Map.of("openMetrics", Boolean.toString(openMetrics)), String.class);
     }
 
     public Map submitJobText(
@@ -78,7 +95,7 @@ public class SeaTunnelRestClient {
             String jobId,
             String jobName,
             Boolean isStartWithSavePoint) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return post(clientId, "/job/submit", configText, MediaType.TEXT_PLAIN, query("format", format, "jobId", jobId, "jobName", jobName, "isStartWithSavePoint", isStartWithSavePoint), Map.class);
     }
 
     public Map submitJobJson(
@@ -87,14 +104,14 @@ public class SeaTunnelRestClient {
             String jobId,
             String jobName,
             Boolean isStartWithSavePoint) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return post(clientId, "/job/submit", configJsonObject, MediaType.APPLICATION_JSON, query("jobId", jobId, "jobName", jobName, "isStartWithSavePoint", isStartWithSavePoint), Map.class);
     }
 
     public Map submitJobUpload(
             Long clientId,
             byte[] fileBytes,
             String filename) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return submitJobUpload(clientId, fileBytes, filename, null, null, null);
     }
 
     public Map submitJobUpload(
@@ -104,26 +121,28 @@ public class SeaTunnelRestClient {
             String jobId,
             String jobName,
             Boolean isStartWithSavePoint) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        MultiValueMap<String, Object> form = new LinkedMultiValueMap<>();
+        form.add("file", new org.springframework.core.io.ByteArrayResource(fileBytes) { @Override public String getFilename() { return filename; } });
+        return post(clientId, "/job/upload", form, MediaType.MULTIPART_FORM_DATA, query("jobId", jobId, "jobName", jobName, "isStartWithSavePoint", isStartWithSavePoint), Map.class);
     }
 
     public List submitJobsBatch(
             Long clientId,
             List jobConfigs) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return post(clientId, "/job/submit-batch", jobConfigs, MediaType.APPLICATION_JSON, Map.of(), List.class);
     }
 
     public Map stopJob(
             Long clientId,
             String jobId,
             boolean isStopWithSavePoint) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return post(clientId, "/job/stop/" + jobId, null, MediaType.APPLICATION_JSON, Map.of("isStopWithSavePoint", Boolean.toString(isStopWithSavePoint)), Map.class);
     }
 
     public Map checkpointOverview(
             Long clientId,
             Long jobId) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/checkpoint-overview/" + jobId, Map.of(), Map.class);
     }
 
     public List checkpointHistory(
@@ -132,12 +151,27 @@ public class SeaTunnelRestClient {
             Long pipelineId,
             Integer limit,
             String status) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return get(clientId, "/maps/checkpoint-history/" + jobId + "/" + pipelineId, query("limit", limit, "status", status), List.class);
     }
 
     public List stopJobsBatch(
             Long clientId,
             List<Map<String, Object>> items) {
-        throw new UnsupportedOperationException("Not implemented yet");
+        return post(clientId, "/job/stop-batch", items, MediaType.APPLICATION_JSON, Map.of(), List.class);
     }
+
+    private <T> T get(Long clientId, String path, Map<String, String> query, Class<T> type) { return get(resolver.resolveBaseApiUrl(clientId), null, query, resolver.resolveAuth(clientId), path, type); }
+    private <T> T get(String baseUrl, String contextPath, Map<String, String> query, SeaTunnelClientAuth auth, String path, Class<T> type) { return exchange(baseUrl, contextPath, path, HttpMethod.GET, null, null, query, auth, type); }
+    private <T> T post(Long clientId, String path, Object body, MediaType contentType, Map<String, String> query, Class<T> type) { return exchange(resolver.resolveBaseApiUrl(clientId), null, path, HttpMethod.POST, body, contentType, query, resolver.resolveAuth(clientId), type); }
+    private <T> T exchange(String baseUrl, String contextPath, String path, HttpMethod method, Object body, MediaType contentType, Map<String, String> query, SeaTunnelClientAuth auth, Class<T> type) {
+        HttpHeaders headers = new HttpHeaders(); if (contentType != null) headers.setContentType(contentType); if (auth != null && Boolean.TRUE.equals(auth.getAuthEnabled())) headers.setBasicAuth(auth.getUsername(), auth.getPassword());
+        String root = trim(baseUrl) + normalize(contextPath) + REST_ROOT + path;
+        UriComponentsBuilder uri = UriComponentsBuilder.fromHttpUrl(root); query.forEach((key, value) -> { if (value != null) uri.queryParam(key, value); });
+        try { return restTemplate.exchange(uri.toUriString(), method, new HttpEntity<>(body, headers), type).getBody(); }
+        catch (RestClientResponseException e) { throw new SeaTunnelClientException("SeaTunnel returned HTTP " + e.getRawStatusCode(), e.getRawStatusCode(), e.getResponseBodyAsString(), e); }
+        catch (Exception e) { throw new SeaTunnelClientException("SeaTunnel request failed", 0, null, e); }
+    }
+    private static String trim(String value) { if (value == null || value.isBlank()) throw new IllegalArgumentException("SeaTunnel base URL must not be blank"); return value.replaceAll("/+$", ""); }
+    private static String normalize(String value) { return value == null || value.isBlank() ? "" : "/" + value.replaceAll("^/+|/+$", ""); }
+    private static Map<String, String> query(Object... values) { java.util.LinkedHashMap<String, String> result = new java.util.LinkedHashMap<>(); for (int i = 0; i < values.length; i += 2) if (values[i + 1] != null) result.put((String) values[i], String.valueOf(values[i + 1])); return result; }
 }
