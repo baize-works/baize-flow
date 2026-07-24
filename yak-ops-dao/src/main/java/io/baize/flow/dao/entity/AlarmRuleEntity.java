@@ -28,7 +28,7 @@ public class AlarmRuleEntity extends BaseEntity {
     private String targetJobs;
 
     /**
-     * Comma-separated {@link io.baize.flow.common.enums.JobStatus}
+     * Comma-separated {@link io.baize.flow.domain.enums.JobStatus}
      * names that should trigger an alarm, e.g. "FAILED,CANCELED".
      */
     private String triggerStatuses;

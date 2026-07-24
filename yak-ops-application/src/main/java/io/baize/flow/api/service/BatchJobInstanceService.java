@@ -1,6 +1,6 @@
 package io.baize.flow.api.service;
 
-import io.baize.flow.common.enums.RunMode;
+import io.baize.flow.domain.enums.RunMode;
 import io.baize.flow.dao.entity.JobInstance;
 import io.baize.flow.spi.bean.dto.SeaTunnelJobInstanceDTO;
 import io.baize.flow.spi.bean.dto.command.JobDefinitionSaveCommand;

@@ -5,10 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import io.baize.flow.api.quartz.QuartzJob;
 import io.baize.flow.api.service.JobScheduleService;
-import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.domain.enums.ScheduleStatusEnum;
 import io.baize.flow.common.utils.ConvertUtil;
 import io.baize.flow.common.utils.JSONUtils;
-import io.baize.flow.common.utils.Utils;
+import io.baize.flow.infrastructure.quartz.QuartzScheduleUtils;
 import io.baize.flow.dao.entity.JobSchedule;
 import io.baize.flow.dao.repository.JobScheduleDao;
 import io.baize.flow.spi.bean.dto.SeaTunnelJobScheduleDTO;
@@ -155,7 +155,7 @@ public class JobScheduleServiceImpl implements JobScheduleService {
             throw new RuntimeException("Failed to start schedule", e);
         }
 
-        Date nextExecutionTime = Utils.getNextExecutionTime(jobSchedule.getCronExpression());
+        Date nextExecutionTime = QuartzScheduleUtils.getNextExecutionTime(jobSchedule.getCronExpression());
         jobScheduleDao.updateNextScheduleTime(taskScheduleId, nextExecutionTime);
 
         jobScheduleDao.updateScheduleStatus(taskScheduleId, ScheduleStatusEnum.NORMAL);

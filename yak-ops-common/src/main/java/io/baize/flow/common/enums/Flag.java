@@ -1,6 +1,5 @@
 package io.baize.flow.common.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 
 
 public enum Flag {
@@ -16,7 +15,6 @@ public enum Flag {
         this.descp = descp;
     }
 
-    @EnumValue
     private final int code;
     private final String descp;
 

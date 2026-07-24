@@ -3,7 +3,7 @@ package io.baize.flow.api.metrics;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;

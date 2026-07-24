@@ -1,11 +1,11 @@
-package io.baize.flow.common.utils;
+package io.baize.flow.infrastructure.quartz;
 
 import org.quartz.CronExpression;
 
 import java.text.ParseException;
 import java.util.Date;
 
-public class Utils {
+public final class QuartzScheduleUtils {
 
     /**
      * 计算下次执行时间

@@ -2,7 +2,7 @@ package io.baize.flow.core.verify.executor;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 import io.baize.flow.core.verify.job.ConnectivityTestJob;
 import io.baize.flow.dao.entity.SeaTunnelClient;
 import io.baize.flow.engine.client.rest.SeaTunnelRestClient;

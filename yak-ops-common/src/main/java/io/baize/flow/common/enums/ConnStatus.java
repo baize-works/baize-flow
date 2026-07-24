@@ -1,6 +1,5 @@
 package io.baize.flow.common.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,7 +12,6 @@ public enum ConnStatus {
     CONNECTING("CONNECTING", "连接中"),
     CONNECTED_NONE("CONNECTED_NONE", "未连接");
 
-    @EnumValue
     private final String code;
     private final String description;
 

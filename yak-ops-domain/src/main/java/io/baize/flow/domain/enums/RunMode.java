@@ -1,6 +1,5 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -10,7 +9,6 @@ public enum RunMode {
     SCHEDULED("SCHEDULED", "SCHEDULED"),
     MANUAL("MANUAL", "MANUAL");
 
-    @EnumValue
     private final String code;
     private final String description;
 }

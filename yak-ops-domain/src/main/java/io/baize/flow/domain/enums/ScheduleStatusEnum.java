@@ -1,6 +1,5 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +11,6 @@ public enum ScheduleStatusEnum {
     PAUSE(2, "pause"),
     EMPTY(3, "empty");
 
-    @EnumValue
     private final int code;
     private final String desc;
 

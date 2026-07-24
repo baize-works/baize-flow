@@ -1,6 +1,5 @@
 package io.baize.flow.common.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -14,7 +13,6 @@ public enum JobDefinitionMode {
     GUIDE_SINGLE("GUIDE_SINGLE", "单表模式"),
     GUIDE_MULTI("GUIDE_MULTI", "多表模式");
 
-    @EnumValue
     private final String code;
     private final String description;
 }

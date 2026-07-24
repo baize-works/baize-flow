@@ -1,8 +1,8 @@
 package io.baize.flow.api.service.support;
 
-import io.baize.flow.common.enums.JobMode;
-import io.baize.flow.common.enums.JobStatus;
-import io.baize.flow.common.enums.RunMode;
+import io.baize.flow.domain.enums.JobMode;
+import io.baize.flow.domain.enums.JobStatus;
+import io.baize.flow.domain.enums.RunMode;
 import io.baize.flow.dao.entity.JobInstance;
 import io.baize.flow.spi.bean.dto.command.JobDefinitionSaveCommand;
 import org.springframework.stereotype.Component;

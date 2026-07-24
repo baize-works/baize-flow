@@ -20,7 +20,7 @@ public interface AlarmRuleTargetRepository {
      *
      * @param jobDefinitionId target definition id, may be null (matches rules
      *                        whose own job_definition_id is null = all jobs)
-     * @param newStatus       new {@link io.baize.flow.common.enums.JobStatus} name
+     * @param newStatus       new {@link io.baize.flow.domain.enums.JobStatus} name
      */
     List<AlarmTarget> findMatchedTargets(Long jobDefinitionId, String newStatus);
 

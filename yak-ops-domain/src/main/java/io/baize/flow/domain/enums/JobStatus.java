@@ -1,4 +1,4 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
 /** Possible states of a job once it has been accepted by the dispatcher. */
 public enum JobStatus {

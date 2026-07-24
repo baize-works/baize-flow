@@ -3,7 +3,7 @@ package io.baize.flow.api.service.application;
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import io.baize.flow.api.service.JobScheduleService;
-import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.domain.enums.ScheduleStatusEnum;
 import io.baize.flow.dao.entity.JobSchedule;
 import io.baize.flow.spi.bean.dto.SeaTunnelJobScheduleDTO;
 import io.baize.flow.spi.bean.dto.command.BatchJobSaveCommand;

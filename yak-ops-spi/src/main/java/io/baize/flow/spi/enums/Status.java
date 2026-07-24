@@ -1,7 +1,6 @@
 package io.baize.flow.spi.enums;
 
 import lombok.Getter;
-import org.springframework.context.i18n.LocaleContextHolder;
 
 import java.util.Locale;
 import java.util.Optional;
@@ -209,7 +208,7 @@ public enum Status {
     }
 
     public String getMsg() {
-        if (Locale.SIMPLIFIED_CHINESE.getLanguage().equals(LocaleContextHolder.getLocale().getLanguage())) {
+        if (Locale.SIMPLIFIED_CHINESE.getLanguage().equals(Locale.getDefault().getLanguage())) {
             return this.zhMsg;
         } else {
             return this.enMsg;

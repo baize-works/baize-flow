@@ -1,6 +1,6 @@
-package io.baize.flow.common.exception;
+package io.baize.flow.domain.exception;
 
-import io.baize.flow.common.enums.JobSubmitStage;
+import io.baize.flow.domain.enums.JobSubmitStage;
 
 public class JobSubmitException extends RuntimeException {
 

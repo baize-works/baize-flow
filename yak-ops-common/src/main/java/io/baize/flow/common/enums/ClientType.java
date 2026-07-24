@@ -1,6 +1,5 @@
 package io.baize.flow.common.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 
 /**
  * Client type
@@ -10,7 +9,6 @@ public enum ClientType {
     FLINK("FLINK"),
     ZETA("ZETA");
 
-    @EnumValue
     private final String value;
 
     ClientType(String value) {

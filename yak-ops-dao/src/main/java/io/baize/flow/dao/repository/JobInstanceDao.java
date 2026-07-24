@@ -1,8 +1,8 @@
 package io.baize.flow.dao.repository;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import io.baize.flow.common.enums.JobMode;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobMode;
+import io.baize.flow.domain.enums.JobStatus;
 import io.baize.flow.dao.entity.JobInstance;
 import io.baize.flow.spi.bean.dto.SeaTunnelJobInstanceDTO;
 import io.baize.flow.spi.bean.vo.JobInstanceVO;

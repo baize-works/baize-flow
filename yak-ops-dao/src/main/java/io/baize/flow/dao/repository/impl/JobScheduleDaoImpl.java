@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import jakarta.annotation.Resource;
 import lombok.NonNull;
-import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.domain.enums.ScheduleStatusEnum;
 import io.baize.flow.dao.entity.JobSchedule;
 import io.baize.flow.dao.mapper.JobScheduleMapper;
 import io.baize.flow.dao.repository.BaseDao;

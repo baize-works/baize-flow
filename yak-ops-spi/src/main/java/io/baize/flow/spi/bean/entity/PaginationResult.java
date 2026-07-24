@@ -1,6 +1,5 @@
 package io.baize.flow.spi.bean.entity;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -17,6 +16,10 @@ import java.util.List;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class PaginationResult<T> extends BaseResult {
 
     @Serial
@@ -50,10 +53,6 @@ public class PaginationResult<T> extends BaseResult {
         paginationResult.data.setPagination(anotherPaginationResult.getData().getPagination());
         paginationResult.data.setBizData(dataList);
         return paginationResult;
-    }
-
-    public static <T, U> PaginationResult<T> buildSuc(List<T> bizDataList, IPage<U> iPage) {
-        return PaginationResult.buildSuc(bizDataList, iPage.getTotal(), iPage.getCurrent(), iPage.getSize());
     }
 
     public static <T> PaginationResult<T> buildSuc(List<T> bizDataList, long total, long pageNo, long pageSize) {

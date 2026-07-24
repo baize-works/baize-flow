@@ -3,10 +3,9 @@ package io.baize.flow.spi.bean.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import io.baize.flow.common.enums.JobMode;
-import io.baize.flow.common.enums.RunMode;
+import io.baize.flow.domain.enums.JobMode;
+import io.baize.flow.domain.enums.RunMode;
 import io.baize.flow.spi.bean.dto.pagination.PaginationBaseDTO;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -17,6 +16,10 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "Job instance DTO representing a single execution of a job")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class SeaTunnelJobInstanceDTO extends PaginationBaseDTO {
 
     @Schema(
@@ -51,7 +54,6 @@ public class SeaTunnelJobInstanceDTO extends PaginationBaseDTO {
             nullable = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date queryStartTime;
 
     @Schema(
@@ -62,7 +64,6 @@ public class SeaTunnelJobInstanceDTO extends PaginationBaseDTO {
             nullable = true
     )
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date queryEndTime;
 
     @Schema(

@@ -1,6 +1,6 @@
 package io.baize.flow.dao.repository;
 
-import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.domain.enums.ScheduleStatusEnum;
 import io.baize.flow.dao.entity.JobSchedule;
 
 import java.util.Date;

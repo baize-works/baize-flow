@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
-import io.baize.flow.common.enums.JobMode;
+import io.baize.flow.domain.enums.JobMode;
 import io.baize.flow.common.enums.SyncModeEnum;
 
 import java.util.Date;

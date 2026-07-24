@@ -5,6 +5,10 @@ import lombok.Data;
 
 @Data
 @Schema(description = "客户端验证数据源请求")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class ClientDatasourceVerifyDTO {
 
     @Schema(description = "数据源ID", requiredMode = Schema.RequiredMode.REQUIRED)

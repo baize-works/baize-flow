@@ -13,6 +13,10 @@ import java.util.Map;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class BatchGuideSingleJobSaveCommand implements BatchJobSaveCommand, GuideSingleJobContentCommand {
 
     private Long id;

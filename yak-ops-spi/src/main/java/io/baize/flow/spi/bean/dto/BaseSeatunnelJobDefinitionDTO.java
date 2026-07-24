@@ -1,12 +1,10 @@
 package io.baize.flow.spi.bean.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.domain.enums.ScheduleStatusEnum;
 import io.baize.flow.spi.bean.dto.pagination.PaginationBaseDTO;
 
 import java.util.Date;
@@ -16,9 +14,12 @@ import java.util.Date;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "Base job definition DTO containing common fields for all job types")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public abstract class BaseSeatunnelJobDefinitionDTO extends PaginationBaseDTO {
 
-    @TableId(type = IdType.INPUT)
     @Schema(
             description = "Job definition ID (auto-generated)",
             example = "1001",

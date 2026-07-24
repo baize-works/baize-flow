@@ -10,6 +10,10 @@ import io.baize.flow.common.constants.PaginationConstant;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Schema(description = "Base pagination DTO with page number and page size")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class PaginationBaseDTO {
 
     @NotNull(message = "Page number cannot be empty")

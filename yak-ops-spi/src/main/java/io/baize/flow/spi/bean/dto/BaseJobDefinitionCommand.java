@@ -4,7 +4,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import io.baize.flow.common.enums.JobMode;
+import io.baize.flow.domain.enums.JobMode;
 import io.baize.flow.common.enums.SyncModeEnum;
 import io.baize.flow.spi.bean.dto.pagination.PaginationBaseDTO;
 
@@ -12,6 +12,10 @@ import io.baize.flow.spi.bean.dto.pagination.PaginationBaseDTO;
 @ToString
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "Base job definition command")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public abstract class BaseJobDefinitionCommand extends PaginationBaseDTO {
 
     @Schema(description = "Job definition ID", example = "1001")

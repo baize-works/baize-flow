@@ -6,7 +6,7 @@ import io.baize.flow.api.alarm.event.JobStatusChangedEvent;
 import io.baize.flow.api.service.BatchJobInstanceService;
 import io.baize.flow.api.utils.JobUtils;
 import io.baize.flow.common.enums.JobResult;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 import io.baize.flow.dao.entity.JobInstance;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
