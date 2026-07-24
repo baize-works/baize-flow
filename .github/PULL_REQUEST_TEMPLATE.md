@@ -15,8 +15,8 @@
 <!-- List the commands you ran and the results. -->
 
 - [ ] `./mvnw -T 1C clean verify`
-- [ ] `cd baize-flow-ui && yarn`
-- [ ] `cd baize-flow-ui && yarn build`
+- [ ] `cd yak-ops-ui && yarn`
+- [ ] `cd yak-ops-ui && yarn build`
 
 ## Checklist
 

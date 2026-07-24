@@ -7,6 +7,6 @@
 !docker/nginx/
 !docker/nginx/default.conf
 
-!baize-flow-dist/
-!baize-flow-dist/target/
-!baize-flow-dist/target/baize-flow-*.tar.gz
+!yak-ops-dist/
+!yak-ops-dist/target/
+!yak-ops-dist/target/yak-ops-*.tar.gz

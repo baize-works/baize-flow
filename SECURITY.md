@@ -1,6 +1,6 @@
 # Security Policy
 
-Baize Flow takes security issues seriously. Please report suspected vulnerabilities privately so maintainers can investigate and coordinate a fix before public disclosure.
+Yak Ops takes security issues seriously. Please report suspected vulnerabilities privately so maintainers can investigate and coordinate a fix before public disclosure.
 
 ## Supported Versions
 
@@ -28,5 +28,5 @@ The project will acknowledge reports as soon as possible and will coordinate dis
 - Change default credentials before exposing an environment.
 - Restrict access to the Web UI and API with network controls and authentication.
 - Store datasource credentials securely and rotate them regularly.
-- Keep Baize Flow, Apache SeaTunnel, JDK, Node.js, and database drivers up to date.
+- Keep Yak Ops, Apache SeaTunnel, JDK, Node.js, and database drivers up to date.
 - Review logs and audit trails for unexpected activity.

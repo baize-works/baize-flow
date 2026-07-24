@@ -1,12 +1,12 @@
 name: Feature request
-description: Suggest an improvement or new capability for Baize Flow
+description: Suggest an improvement or new capability for Yak Ops
 title: "[Feature] "
 labels: [enhancement]
 body:
   - type: markdown
     attributes:
       value: |
-        Thanks for helping improve Baize Flow. Please explain the user problem and the proposed outcome.
+        Thanks for helping improve Yak Ops. Please explain the user problem and the proposed outcome.
   - type: textarea
     id: problem
     attributes:

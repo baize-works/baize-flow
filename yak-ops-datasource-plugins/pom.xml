@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>io.baize.flow</groupId>
+        <artifactId>yak-ops</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>yak-ops-datasource-plugins</artifactId>
+    <version>1.0.0</version>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>yak-ops-datasource-all</module>
+        <module>yak-ops-datasource-api</module>
+        <module>yak-ops-datasource-mysql</module>
+        <module>yak-ops-datasource-mysql-cdc</module>
+        <module>yak-ops-datasource-oracle</module>
+        <module>yak-ops-datasource-postgresql</module>
+        <module>yak-ops-datasource-doris</module>
+        <module>yak-ops-datasource-kingbase</module>
+        <module>yak-ops-datasource-dameng</module>
+    </modules>
+
+
+</project>

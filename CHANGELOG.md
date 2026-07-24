@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to Baize Flow will be documented in this file.
+All notable changes to Yak Ops will be documented in this file.
 
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and this project uses semantic versioning where practical.
 
@@ -25,8 +25,8 @@ The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/), and
 
 ### Added
 
-- Baize Flow backend modules for API, core services, datasource connections, DAO plugins, SPI, engine client, and distribution packaging.
-- Baize Flow UI for visual pipeline creation, datasource management, task execution, monitoring, and logs.
+- Yak Ops backend modules for API, core services, datasource connections, DAO plugins, SPI, engine client, and distribution packaging.
+- Yak Ops UI for visual pipeline creation, datasource management, task execution, monitoring, and logs.
 
-[Unreleased]: https://github.com/weifuwan/baize-flow/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/weifuwan/baize-flow/releases/tag/v1.0.0
+[Unreleased]: https://github.com/weifuwan/yak-ops/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/weifuwan/yak-ops/releases/tag/v1.0.0

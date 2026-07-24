@@ -52,7 +52,7 @@ spark-warehouse
 /seatunnel-ui/node/*
 /seatunnel-ui/node_modules
 /seatunnel-ui/node_modules/*
-/baize-flow-it/profile/*
+/yak-ops-it/profile/*
 /deploy/docker/dist/
 /node_modules/.yarn-integrity
 
