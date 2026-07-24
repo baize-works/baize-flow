@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import io.baize.flow.common.enums.JobSubmitStage;
 import io.baize.flow.common.exception.JobSubmitException;
+import io.baize.flow.api.service.application.BatchJobSubmissionUseCase;
 import io.baize.flow.core.exceptions.ServiceException;
 import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
 import io.baize.flow.spi.bean.vo.JobInstanceVO;
@@ -23,7 +24,7 @@ import java.util.Map;
  */
 @Component
 @Slf4j
-public class BatchJobSubmitter {
+public class BatchJobSubmitter implements BatchJobSubmissionUseCase {
 
     private static final String JOB_TYPE_BATCH = "BATCH";
 
@@ -45,6 +46,7 @@ public class BatchJobSubmitter {
         this.batchJobResultHandler = batchJobResultHandler;
     }
 
+    @Override
     public void submit(JobInstanceVO instance) {
         validate(instance);
 
@@ -110,6 +112,7 @@ public class BatchJobSubmitter {
         }
     }
 
+    @Override
     public void pause(JobInstanceVO instance) {
         if (instance == null || instance.getId() == null) {
             throw new ServiceException(Status.REQUEST_PARAMS_NOT_VALID_ERROR, "jobInstance");

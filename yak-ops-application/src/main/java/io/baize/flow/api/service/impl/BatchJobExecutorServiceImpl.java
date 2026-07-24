@@ -2,7 +2,7 @@ package io.baize.flow.api.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import io.baize.flow.api.metrics.BatchJobSubmitter;
+import io.baize.flow.api.service.application.BatchJobSubmissionUseCase;
 import io.baize.flow.api.service.BatchJobDefinitionService;
 import io.baize.flow.api.service.BatchJobExecutorService;
 import io.baize.flow.api.service.BatchJobInstanceService;
@@ -33,11 +33,11 @@ public class BatchJobExecutorServiceImpl implements BatchJobExecutorService {
 
     private final BatchJobInstanceService instanceService;
     private final BatchJobDefinitionService definitionService;
-    private final BatchJobSubmitter jobSubmitter;
+    private final BatchJobSubmissionUseCase jobSubmitter;
 
     public BatchJobExecutorServiceImpl(BatchJobInstanceService instanceService,
                                        BatchJobDefinitionService definitionService,
-                                       BatchJobSubmitter jobSubmitter) {
+                                       BatchJobSubmissionUseCase jobSubmitter) {
         this.instanceService = instanceService;
         this.definitionService = definitionService;
         this.jobSubmitter = jobSubmitter;

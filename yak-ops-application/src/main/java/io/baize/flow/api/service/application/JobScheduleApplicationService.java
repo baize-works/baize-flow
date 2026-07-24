@@ -9,7 +9,6 @@ import io.baize.flow.spi.bean.dto.SeaTunnelJobScheduleDTO;
 import io.baize.flow.spi.bean.dto.command.BatchJobSaveCommand;
 import io.baize.flow.spi.bean.dto.command.JobDefinitionSaveCommand;
 import io.baize.flow.spi.bean.dto.config.JobScheduleConfig;
-import org.quartz.SchedulerException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,19 +42,15 @@ public class JobScheduleApplicationService {
                 existing
         );
 
-        try {
-            Long scheduleId = saveSchedule(scheduleDTO, existing);
+        Long scheduleId = saveSchedule(scheduleDTO, existing);
 
-            // 先同步 Quartz，避免残留旧 trigger
-            refreshQuartzState(scheduleId, scheduleStatus);
+        // 先停再启，避免技术调度器中残留旧 trigger
+        refreshQuartzState(scheduleId, scheduleStatus);
 
-            // 再把最终业务状态回写成前端目标状态，避免被 startSchedule/stopSchedule 中间覆盖
-            boolean updated = jobScheduleService.updateScheduleStatus(scheduleId, scheduleStatus);
-            if (!updated) {
-                throw new RuntimeException("Failed to update final schedule status");
-            }
-        } catch (SchedulerException e) {
-            throw new RuntimeException("Failed to save or update schedule", e);
+        // 再把最终业务状态回写成前端目标状态，避免被 startSchedule/stopSchedule 中间覆盖
+        boolean updated = jobScheduleService.updateScheduleStatus(scheduleId, scheduleStatus);
+        if (!updated) {
+            throw new RuntimeException("Failed to update final schedule status");
         }
     }
 
@@ -89,8 +84,7 @@ public class JobScheduleApplicationService {
         return dto;
     }
 
-    private Long saveSchedule(SeaTunnelJobScheduleDTO scheduleDTO, JobSchedule existing)
-            throws SchedulerException {
+    private Long saveSchedule(SeaTunnelJobScheduleDTO scheduleDTO, JobSchedule existing) {
         if (existing == null) {
             return jobScheduleService.createTaskSchedule(scheduleDTO);
         }
@@ -98,8 +92,7 @@ public class JobScheduleApplicationService {
         return existing.getId();
     }
 
-    private void refreshQuartzState(Long scheduleId, ScheduleStatusEnum scheduleStatus)
-            throws SchedulerException {
+    private void refreshQuartzState(Long scheduleId, ScheduleStatusEnum scheduleStatus) {
         // 先停再启，避免 Quartz 中残留旧 trigger
         jobScheduleService.stopSchedule(scheduleId);
 

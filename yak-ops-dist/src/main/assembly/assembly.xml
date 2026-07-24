@@ -14,9 +14,9 @@
             <useProjectArtifact>false</useProjectArtifact>
             <outputDirectory>libs</outputDirectory>
             <includes>
-                <include>io.baize.flow:yak-ops-api</include>
+                <include>io.baize.flow:yak-ops-boot</include>
             </includes>
-            <outputFileNameMapping>yak-ops-api.jar</outputFileNameMapping>
+            <outputFileNameMapping>yak-ops-boot.jar</outputFileNameMapping>
         </dependencySet>
     </dependencySets>
 
@@ -31,7 +31,7 @@
             </includes>
         </fileSet>
         <fileSet>
-            <directory>../yak-ops-api/src/main/resources</directory>
+            <directory>../yak-ops-boot/src/main/resources</directory>
             <outputDirectory>conf</outputDirectory>
             <includes>
                 <include>application.yml</include>

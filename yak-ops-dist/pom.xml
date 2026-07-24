@@ -29,7 +29,7 @@
     <dependencies>
         <dependency>
             <groupId>io.baize.flow</groupId>
-            <artifactId>yak-ops-api</artifactId>
+            <artifactId>yak-ops-boot</artifactId>
             <version>${project.version}</version>
         </dependency>
     </dependencies>
