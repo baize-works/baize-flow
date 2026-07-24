@@ -1,13 +1,11 @@
 package io.baize.flow.api.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import jakarta.annotation.Resource;
+import io.baize.flow.api.model.User;
+import io.baize.flow.api.port.UserRepository;
 import io.baize.flow.api.service.UsersService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import io.baize.flow.common.enums.UserType;
-import io.baize.flow.dao.entity.User;
-import io.baize.flow.dao.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,14 +13,15 @@ public class UsersServiceImpl implements UsersService {
 
     private static final PasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
-    @Resource
-    private UserMapper userMapper;
+    private final UserRepository users;
+
+    public UsersServiceImpl(UserRepository users) {
+        this.users = users;
+    }
 
     @Override
     public User queryUser(String name, String password) {
-        LambdaQueryWrapper<User> wrapper = new LambdaQueryWrapper<>();
-        wrapper.eq(User::getUserName, name);
-        User user = userMapper.selectOne(wrapper);
+        User user = users.findByUserName(name).orElse(null);
         if (user == null || !PASSWORD_ENCODER.matches(password, user.getUserPassword())) {
             return null;
         }
@@ -35,13 +34,13 @@ public class UsersServiceImpl implements UsersService {
         if (loginUser.getUserType() == UserType.ADMIN_USER) {
             User = loginUser;
         } else {
-            User = userMapper.selectById(loginUser.getId());
+            User = users.findById(loginUser.getId()).orElse(null);
         }
         return User;
     }
 
     @Override
     public User getById(int userId) {
-        return userMapper.selectById(userId);
+        return users.findById(userId).orElse(null);
     }
 }

@@ -1,7 +1,7 @@
 package io.baize.flow.api.service;
 
 
-import io.baize.flow.dao.entity.User;
+import io.baize.flow.api.model.User;
 
 /**
  * users service
