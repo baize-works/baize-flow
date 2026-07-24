@@ -1,15 +1,13 @@
 package io.baize.flow.api.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import io.baize.flow.api.controller.BaseController;
+import io.baize.flow.api.model.Session;
+import io.baize.flow.api.model.User;
+import io.baize.flow.api.port.SessionRepository;
 import io.baize.flow.api.service.SessionService;
 import io.baize.flow.common.constants.Constants;
-import io.baize.flow.dao.entity.Session;
-import io.baize.flow.dao.entity.User;
-import io.baize.flow.dao.mapper.SessionMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -26,8 +24,11 @@ import java.util.UUID;
 public class SessionServiceImpl implements SessionService {
     private static final Logger logger = LoggerFactory.getLogger(SessionService.class);
 
-    @Resource
-    private SessionMapper sessionMapper;
+    private final SessionRepository sessions;
+
+    public SessionServiceImpl(SessionRepository sessions) {
+        this.sessions = sessions;
+    }
 
     @Override
     public Session getSession(HttpServletRequest request) {
@@ -48,7 +49,7 @@ public class SessionServiceImpl implements SessionService {
         String ip = BaseController.getClientIpAddress(request);
         logger.debug("get session: {}, ip: {}", sessionId, ip);
 
-        return sessionMapper.selectById(sessionId);
+        return sessions.findById(sessionId).orElse(null);
     }
 
     @Override
@@ -56,10 +57,7 @@ public class SessionServiceImpl implements SessionService {
     public String createSession(User User, String ip) {
         Session Session = null;
 
-        LambdaQueryWrapper<Session> sessionLambdaQueryWrapper = new LambdaQueryWrapper<>();
-        sessionLambdaQueryWrapper.eq(io.baize.flow.dao.entity.Session::getUserId, User.getId());
-        // logined
-        List<Session> SessionList = sessionMapper.selectList(sessionLambdaQueryWrapper);
+        List<Session> SessionList = sessions.findByUserId(User.getId());
 
         Date now = new Date();
 
@@ -70,7 +68,7 @@ public class SessionServiceImpl implements SessionService {
             // is session list greater 1 ， delete other ，get one
             if (SessionList.size() > 1) {
                 for (int i = 1; i < SessionList.size(); i++) {
-                    sessionMapper.deleteById(SessionList.get(i).getId());
+                    sessions.deleteById(SessionList.get(i).getId());
                 }
             }
             Session = SessionList.get(0);
@@ -79,7 +77,7 @@ public class SessionServiceImpl implements SessionService {
                  * updateProcessInstance the latest login time
                  */
                 Session.setLastLoginTime(now);
-                sessionMapper.updateById(Session);
+                sessions.save(Session);
 
                 return Session.getId();
 
@@ -87,7 +85,7 @@ public class SessionServiceImpl implements SessionService {
                 /*
                  * session expired, then delete this session first
                  */
-                sessionMapper.deleteById(Session.getId());
+                sessions.deleteById(Session.getId());
             }
         }
 
@@ -99,7 +97,7 @@ public class SessionServiceImpl implements SessionService {
         Session.setUserId(User.getId());
         Session.setLastLoginTime(now);
 
-        sessionMapper.insert(Session);
+        sessions.save(Session);
 
         return Session.getId();
     }
@@ -110,13 +108,8 @@ public class SessionServiceImpl implements SessionService {
             /*
              * query session by user id and ip
              */
-            LambdaQueryWrapper<Session> sessionLambdaQueryWrapper = new LambdaQueryWrapper<>();
-            sessionLambdaQueryWrapper.eq(Session::getUserId, loginUser.getId());
-            sessionLambdaQueryWrapper.eq(Session::getIp, ip);
-            Session Session = sessionMapper.selectOne(sessionLambdaQueryWrapper);
-
-            //delete session
-            sessionMapper.deleteById(Session.getId());
+            sessions.findByUserIdAndIp(loginUser.getId(), ip)
+                    .ifPresent(session -> sessions.deleteById(session.getId()));
         } catch (Exception e) {
             logger.warn("userId : {} , ip : {} , find more one session", loginUser.getId(), ip);
         }

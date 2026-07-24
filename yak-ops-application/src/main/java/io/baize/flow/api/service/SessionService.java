@@ -2,8 +2,8 @@ package io.baize.flow.api.service;
 
 
 import jakarta.servlet.http.HttpServletRequest;
-import io.baize.flow.dao.entity.Session;
-import io.baize.flow.dao.entity.User;
+import io.baize.flow.api.model.Session;
+import io.baize.flow.api.model.User;
 
 /**
  * session service

@@ -1,7 +1,7 @@
 package io.baize.flow.api.security.impl.pwd;
 
 import io.baize.flow.api.security.impl.AbstractAuthenticator;
-import io.baize.flow.dao.entity.User;
+import io.baize.flow.api.model.User;
 
 public class PasswordAuthenticator extends AbstractAuthenticator {
 

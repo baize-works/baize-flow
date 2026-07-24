@@ -3,11 +3,11 @@ package io.baize.flow.api.security.impl;
 import jakarta.annotation.Resource;
 import io.baize.flow.api.security.Authenticator;
 import io.baize.flow.api.security.SecurityConfig;
+import io.baize.flow.api.model.User;
 import io.baize.flow.api.service.SessionService;
 import io.baize.flow.api.service.UsersService;
 import io.baize.flow.common.constants.Constants;
 import io.baize.flow.common.enums.Flag;
-import io.baize.flow.dao.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
