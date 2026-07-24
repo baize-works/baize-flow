@@ -31,16 +31,8 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.baize.flow</groupId>
             <artifactId>yak-ops-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.baize.flow</groupId>
-            <artifactId>yak-ops-dao</artifactId>
         </dependency>
 
         <dependency>

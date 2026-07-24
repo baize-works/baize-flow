@@ -8,7 +8,7 @@ import io.baize.flow.dao.entity.JobInstance;
 import io.baize.flow.dao.entity.SeaTunnelClient;
 import io.baize.flow.dao.repository.JobInstanceDao;
 import io.baize.flow.dao.repository.SeaTunnelClientDao;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import io.baize.flow.spi.bean.vo.SeaTunnelClientMetricsVO;
 import io.baize.flow.spi.enums.Status;
 import org.springframework.stereotype.Service;

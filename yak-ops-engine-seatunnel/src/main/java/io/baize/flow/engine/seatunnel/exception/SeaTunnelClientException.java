@@ -1,4 +1,4 @@
-package io.baize.flow.engine.client.exceptions;
+package io.baize.flow.engine.seatunnel.exception;
 
 import lombok.Getter;
 

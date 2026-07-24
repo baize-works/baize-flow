@@ -2,7 +2,7 @@ package io.baize.flow.core.client.gateway;
 
 import jakarta.annotation.Resource;
 import io.baize.flow.core.client.port.SeaTunnelClientRuntimeGateway;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

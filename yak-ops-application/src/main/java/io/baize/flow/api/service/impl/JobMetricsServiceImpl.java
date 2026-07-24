@@ -11,7 +11,7 @@ import io.baize.flow.dao.entity.JobMetrics;
 import io.baize.flow.dao.entity.JobTableMetrics;
 import io.baize.flow.dao.repository.JobMetricsDao;
 import io.baize.flow.dao.repository.JobTableMetricsDao;
-import io.baize.flow.engine.client.rest.SeaTunnelEngineRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelEngineRestClient;
 import io.baize.flow.spi.bean.entity.Scale;
 import io.baize.flow.spi.bean.entity.TimeWindow;
 import io.baize.flow.spi.bean.vo.ChartDataItemVO;

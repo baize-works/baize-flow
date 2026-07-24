@@ -16,5 +16,6 @@
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-datasource-api</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-alarm-api</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-aop</artifactId></dependency>
+            <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-seatunnel</artifactId></dependency>
     </dependencies>
 </project>
