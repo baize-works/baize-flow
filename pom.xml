@@ -46,6 +46,10 @@
 
     <modules>
         <module>yak-ops-api</module>
+        <module>yak-ops-application</module>
+        <module>yak-ops-infrastructure</module>
+        <module>yak-ops-web</module>
+        <module>yak-ops-boot</module>
         <module>yak-ops-common</module>
         <module>yak-ops-datasource-connection</module>
         <module>yak-ops-datasource-plugins</module>
@@ -75,6 +79,26 @@
             <dependency>
                 <groupId>io.baize.flow</groupId>
                 <artifactId>yak-ops-api</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>yak-ops-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>yak-ops-infrastructure</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>yak-ops-web</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.baize.flow</groupId>
+                <artifactId>yak-ops-boot</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

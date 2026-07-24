@@ -1,6 +1,8 @@
-package io.baize.flow.api.security;
+package io.baize.flow.api.config;
 
 import org.apache.commons.lang3.StringUtils;
+import io.baize.flow.api.security.AuthenticationType;
+import io.baize.flow.api.security.Authenticator;
 import io.baize.flow.api.security.impl.pwd.PasswordAuthenticator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
