@@ -1,11 +1,8 @@
 package io.baize.flow.common.utils;
 
-import com.baomidou.mybatisplus.core.toolkit.Assert;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.core.toolkit.SystemClock;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.logging.Log;
-import org.apache.ibatis.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.management.ManagementFactory;
 import java.net.InetAddress;
@@ -15,7 +12,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public class Sequence {
 
-    private static final Log logger = LogFactory.getLog(Sequence.class);
+    private static final Logger logger = LoggerFactory.getLogger(Sequence.class);
     /**
      * 时间起始标记点，作为基准，一般取系统的最近时间（一旦确定不能变动）
      */
@@ -68,10 +65,12 @@ public class Sequence {
      * @param datacenterId 序列号
      */
     public Sequence(long workerId, long datacenterId) {
-        Assert.isFalse(workerId > maxWorkerId || workerId < 0,
-                String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
-        Assert.isFalse(datacenterId > maxDatacenterId || datacenterId < 0,
-                String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+        if (workerId > maxWorkerId || workerId < 0) {
+            throw new IllegalArgumentException(String.format("worker Id can't be greater than %d or less than 0", maxWorkerId));
+        }
+        if (datacenterId > maxDatacenterId || datacenterId < 0) {
+            throw new IllegalArgumentException(String.format("datacenter Id can't be greater than %d or less than 0", maxDatacenterId));
+        }
         this.workerId = workerId;
         this.datacenterId = datacenterId;
     }
@@ -89,7 +88,7 @@ public class Sequence {
             /*
              * GET jvmPid
              */
-            mpid.append(name.split(StringPool.AT)[0]);
+            mpid.append(name.split("@")[0]);
         }
         /*
          * MAC + PID 的 hashcode 获取16个低位
@@ -177,7 +176,7 @@ public class Sequence {
     }
 
     protected long timeGen() {
-        return SystemClock.now();
+        return System.currentTimeMillis();
     }
 
 }

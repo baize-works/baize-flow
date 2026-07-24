@@ -1,6 +1,5 @@
 package io.baize.flow.common.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 
 /**
  * user type
@@ -17,7 +16,6 @@ public enum UserType {
         this.descp = descp;
     }
 
-    @EnumValue
     private final int code;
     private final String descp;
 

@@ -1,6 +1,5 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -13,7 +12,6 @@ public enum ExecutionStatus {
     FAILED("DELETED", "失败"),
     STOPPED("DELETED", "已停止");
 
-    @EnumValue
     private final String code;
     private final String description;
 }

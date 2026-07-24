@@ -3,7 +3,7 @@ package io.baize.flow.dao.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.*;
 import io.baize.flow.common.enums.JobDefinitionMode;
-import io.baize.flow.common.enums.JobMode;
+import io.baize.flow.domain.enums.JobMode;
 import io.baize.flow.common.enums.ReleaseState;
 
 @Data

@@ -5,6 +5,10 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class TimeVariableUpdateDTO implements Serializable {
 
     private static final long serialVersionUID = 1L;

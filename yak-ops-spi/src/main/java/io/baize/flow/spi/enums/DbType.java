@@ -1,6 +1,5 @@
 package io.baize.flow.spi.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.Getter;
 
 import java.util.Arrays;
@@ -24,7 +23,6 @@ public enum DbType {
     private static final Map<String, DbType> DB_TYPE_MAP =
             Arrays.stream(DbType.values()).collect(toMap(DbType::getCode, Function.identity()));
 
-    @EnumValue
     private final String code;
     private final String name;
     private final String descp;

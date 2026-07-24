@@ -1,7 +1,7 @@
 package io.baize.flow.api.alarm.event;
 
 import lombok.Getter;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 import org.springframework.context.ApplicationEvent;
 
 import java.util.Date;

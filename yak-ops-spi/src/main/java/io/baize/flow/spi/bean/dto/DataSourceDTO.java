@@ -11,6 +11,10 @@ import io.baize.flow.spi.enums.DbType;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "Data source DTO for creating and updating data sources")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class DataSourceDTO extends PaginationBaseDTO {
 
     private Long id;

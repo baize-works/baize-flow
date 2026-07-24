@@ -1,6 +1,5 @@
 package io.baize.flow.common.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -12,7 +11,6 @@ public enum EnvironmentEnum {
     PROD("PROD", "生产环境"),
     ;
 
-    @EnumValue
     private final String code;
     private final String description;
 }

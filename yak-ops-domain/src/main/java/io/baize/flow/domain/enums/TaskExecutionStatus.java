@@ -1,7 +1,6 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.Getter;
 
 @Getter
@@ -13,7 +12,6 @@ public enum TaskExecutionStatus {
     CANCELLED("CANCELLED","已取消"),
     UNKNOWN("UNKNOWN","未知");
 
-    @EnumValue
     private final String code;
     private final String description;
 

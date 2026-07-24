@@ -1,6 +1,6 @@
 package io.baize.flow.core.verify.executor;
 
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

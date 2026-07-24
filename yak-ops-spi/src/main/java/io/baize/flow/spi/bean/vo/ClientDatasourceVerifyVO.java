@@ -8,6 +8,10 @@ import java.util.List;
 
 @Data
 @Schema(description = "客户端验证数据源结果")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class ClientDatasourceVerifyVO {
 
     @Schema(description = "是否成功")

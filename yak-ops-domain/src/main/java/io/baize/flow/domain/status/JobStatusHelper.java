@@ -1,6 +1,8 @@
-package io.baize.flow.common.utils;
+package io.baize.flow.domain.status;
 
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
+
+import io.baize.flow.domain.enums.JobStatus;
 
 import java.util.Arrays;
 import java.util.List;

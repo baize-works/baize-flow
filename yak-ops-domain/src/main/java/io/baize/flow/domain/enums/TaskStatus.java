@@ -1,6 +1,5 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
-import com.baomidou.mybatisplus.annotation.EnumValue;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -15,7 +14,6 @@ public enum TaskStatus {
     DISABLED("DISABLED", "已禁用"),
     DELETED("DELETED", "已删除");
 
-    @EnumValue
     private final String code;
     private final String description;
 

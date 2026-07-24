@@ -4,7 +4,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import io.baize.flow.api.metrics.JobResultHandler;
 import io.baize.flow.api.metrics.JobRuntimeContext;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 import io.baize.flow.dao.entity.JobInstance;
 import io.baize.flow.dao.repository.JobInstanceDao;
 import io.baize.flow.engine.client.handler.ZetaJobStatusHandler;

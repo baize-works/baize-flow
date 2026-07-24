@@ -1,11 +1,9 @@
 package io.baize.flow.spi.bean.dto;
 
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import io.baize.flow.common.enums.JobMode;
+import io.baize.flow.domain.enums.JobMode;
 import io.baize.flow.common.enums.SyncModeEnum;
 import io.baize.flow.spi.bean.dto.pagination.PaginationBaseDTO;
 
@@ -18,9 +16,12 @@ import java.util.Date;
 @ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @Schema(description = "Batch job definition DTO")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class BatchJobDefinitionQueryDTO extends PaginationBaseDTO {
 
-    @TableId(type = IdType.INPUT)
     private Long id;
 
     private String sourceType;

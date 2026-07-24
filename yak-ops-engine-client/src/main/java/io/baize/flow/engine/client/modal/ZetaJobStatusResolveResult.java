@@ -2,7 +2,7 @@ package io.baize.flow.engine.client.modal;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import io.baize.flow.common.enums.JobStatus;
+import io.baize.flow.domain.enums.JobStatus;
 
 
 @Getter

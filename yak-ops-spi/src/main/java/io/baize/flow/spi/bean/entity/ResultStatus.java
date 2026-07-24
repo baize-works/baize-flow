@@ -7,6 +7,10 @@ import io.baize.flow.common.constants.Constants;
  * 返回状态
  */
 @Getter
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public enum ResultStatus {
     GATEWAY_INVALID_REQUEST(-1, "invalid request"),
 

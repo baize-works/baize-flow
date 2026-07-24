@@ -3,7 +3,7 @@ package io.baize.flow.dao.entity;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import io.baize.flow.common.enums.ScheduleStatusEnum;
+import io.baize.flow.domain.enums.ScheduleStatusEnum;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package io.baize.flow.common.enums;
+package io.baize.flow.domain.enums;
 
 public enum JobSubmitStage {
     SUBMIT,

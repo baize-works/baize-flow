@@ -6,6 +6,10 @@ import lombok.Data;
 
 @Data
 @Schema(description = "Connector parameter option")
+/**
+ * @deprecated Phase 4/5 compatibility contract; migrate to an application or web contract.
+ */
+@Deprecated(since = "1.0.0", forRemoval = true)
 public class ConnectorParamMetaOptionVO {
 
     @Schema(description = "Option value, same as paramName", example = "fetch_size")
