@@ -6,13 +6,14 @@ import io.baize.flow.common.enums.JobSubmitStage;
 import io.baize.flow.common.exception.JobSubmitException;
 import io.baize.flow.api.service.application.BatchJobSubmissionUseCase;
 import io.baize.flow.core.exceptions.ServiceException;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.api.EngineEndpoint;
+import io.baize.flow.engine.api.EngineGateway;
+import io.baize.flow.engine.api.EngineGatewayRegistry;
+import io.baize.flow.engine.api.EngineSubmitCommand;
 import io.baize.flow.spi.bean.vo.JobInstanceVO;
 import io.baize.flow.spi.enums.Status;
 import org.springframework.stereotype.Component;
 
-import java.nio.charset.StandardCharsets;
-import java.util.Map;
 
 /**
  * Submitter for batch SeaTunnel jobs.
@@ -29,18 +30,18 @@ public class BatchJobSubmitter implements BatchJobSubmissionUseCase {
     private static final String JOB_TYPE_BATCH = "BATCH";
 
     private final JobConfigFileService configFileService;
-    private final SeaTunnelRestClient restClient;
+    private final EngineGatewayRegistry engineGatewayRegistry;
     private final JobMetricsMonitor batchMetricsMonitor;
     private final JobResultWatcher batchJobResultWatcher;
     private final JobResultHandler batchJobResultHandler;
 
     public BatchJobSubmitter(JobConfigFileService configFileService,
-                             SeaTunnelRestClient restClient,
+                             EngineGatewayRegistry engineGatewayRegistry,
                              JobMetricsMonitor batchMetricsMonitor,
                              JobResultWatcher batchJobResultWatcher,
                              JobResultHandler batchJobResultHandler) {
         this.configFileService = configFileService;
-        this.restClient = restClient;
+        this.engineGatewayRegistry = engineGatewayRegistry;
         this.batchMetricsMonitor = batchMetricsMonitor;
         this.batchJobResultWatcher = batchJobResultWatcher;
         this.batchJobResultHandler = batchJobResultHandler;
@@ -77,17 +78,13 @@ public class BatchJobSubmitter implements BatchJobSubmissionUseCase {
 
             String filename = "batch-job-" + instanceId + ".conf";
 
-            Map<?, ?> resp = restClient.submitJobUpload(
-                    clientId,
-                    safeConfig(hoconConfig).getBytes(StandardCharsets.UTF_8),
-                    filename
-            );
-
-            engineId = extractJobId(resp);
+            EngineEndpoint endpoint = EngineEndpoint.seatunnel(clientId);
+            EngineGateway gateway = engineGatewayRegistry.get(endpoint.engineType());
+            engineId = gateway.submit(endpoint, new EngineSubmitCommand(safeConfig(hoconConfig), filename, instance.getJobName())).jobId();
             submitted = true;
 
-            log.info("Submit batch job response received, instanceId={}, resp={}", instanceId, resp);
-            jobLogger.info("Submit batch job response received: " + resp);
+            log.info("Submit batch job response received, instanceId={}, engineId={}", instanceId, engineId);
+            jobLogger.info("Submit batch job response received: engineId=" + engineId);
 
             batchJobResultHandler.updateEngineId(instanceId, engineId);
 
@@ -133,10 +130,11 @@ public class BatchJobSubmitter implements BatchJobSubmissionUseCase {
         log.info("Stopping batch SeaTunnel job: instanceId={}, clientId={}, engineJobId={}",
                 instanceId, clientId, engineJobId);
 
-        Map<?, ?> resp = restClient.stopJob(clientId, engineJobId, false);
+        EngineEndpoint endpoint = EngineEndpoint.seatunnel(clientId);
+        engineGatewayRegistry.get(endpoint.engineType()).stop(endpoint, engineJobId);
 
-        log.info("Stop batch SeaTunnel job response: instanceId={}, clientId={}, engineJobId={}, resp={}",
-                instanceId, clientId, engineJobId, resp);
+        log.info("Stop batch engine job response: instanceId={}, clientId={}, engineJobId={}",
+                instanceId, clientId, engineJobId);
     }
 
     private void registerPostSubmitWatchers(JobRuntimeContext ctx,
@@ -238,16 +236,6 @@ public class BatchJobSubmitter implements BatchJobSubmissionUseCase {
          * If we mark the local instance as failed now, local state may conflict
          * with the real engine state.
          */
-    }
-
-    private String extractJobId(Map<?, ?> resp) {
-        Object jobIdObj = resp == null ? null : resp.get("jobId");
-
-        if (jobIdObj == null) {
-            throw new IllegalStateException("REST submit response missing jobId, resp=" + resp);
-        }
-
-        return jobIdObj.toString();
     }
 
     private void validate(JobInstanceVO instance) {

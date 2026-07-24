@@ -61,6 +61,8 @@
         <module>yak-ops-spi</module>
         <module>yak-ops-core</module>
         <module>yak-ops-engine-client</module>
+        <module>yak-ops-engine-api</module>
+        <module>yak-ops-engine-seatunnel</module>
         <module>yak-ops-dist</module>
     </modules>
 
@@ -191,6 +193,8 @@
                 <artifactId>yak-ops-engine-client</artifactId>
                 <version>${project.version}</version>
             </dependency>
+            <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-api</artifactId><version>${project.version}</version></dependency>
+            <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-seatunnel</artifactId><version>${project.version}</version></dependency>
             <dependency>
                 <groupId>io.baize.flow</groupId>
                 <artifactId>yak-ops-dao-api</artifactId>

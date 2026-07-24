@@ -7,7 +7,8 @@
     <dependencies>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-application</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-web</artifactId></dependency>
-        <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-client</artifactId></dependency>
+        <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-api</artifactId></dependency>
+        <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-seatunnel</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-alarm-all</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-quartz</artifactId></dependency>
         <dependency><groupId>org.springframework.boot</groupId><artifactId>spring-boot-starter-websocket</artifactId></dependency>
