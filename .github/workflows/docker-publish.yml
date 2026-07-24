@@ -110,8 +110,8 @@ jobs:
           push: true
           tags: ${{ steps.backend_meta.outputs.tags }}
           labels: ${{ steps.backend_meta.outputs.labels }}
-          cache-from: type=gha,scope=baize-flow-backend
-          cache-to: type=gha,mode=max,scope=baize-flow-backend
+          cache-from: type=gha,scope=yak-ops-backend
+          cache-to: type=gha,mode=max,scope=yak-ops-backend
 
       # =========================
       # Frontend image
@@ -126,5 +126,5 @@ jobs:
           push: true
           tags: ${{ steps.frontend_meta.outputs.tags }}
           labels: ${{ steps.frontend_meta.outputs.labels }}
-          cache-from: type=gha,scope=baize-flow-frontend
-          cache-to: type=gha,mode=max,scope=baize-flow-frontend
+          cache-from: type=gha,scope=yak-ops-frontend
+          cache-to: type=gha,mode=max,scope=yak-ops-frontend

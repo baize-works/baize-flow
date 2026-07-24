@@ -1,6 +1,6 @@
 # Code of Conduct
 
-Baize Flow follows the Apache Software Foundation community principles. We are committed to providing a welcoming, respectful, and harassment-free experience for everyone.
+Yak Ops follows the Apache Software Foundation community principles. We are committed to providing a welcoming, respectful, and harassment-free experience for everyone.
 
 ## Our Standards
 

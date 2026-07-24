@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible problem in Baize Flow
+description: Report a reproducible problem in Yak Ops
 title: "[Bug] "
 labels: [bug]
 body:
@@ -41,7 +41,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: Baize Flow version or commit
+      label: Yak Ops version or commit
       placeholder: v1.0.0 or commit SHA
     validations:
       required: true

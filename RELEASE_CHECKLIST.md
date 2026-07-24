@@ -1,6 +1,6 @@
 # Release Checklist
 
-Use this checklist to prepare, validate, and publish a Baize Flow release.
+Use this checklist to prepare, validate, and publish a Yak Ops release.
 
 ## 1. Prepare
 
@@ -13,8 +13,8 @@ Use this checklist to prepare, validate, and publish a Baize Flow release.
 ## 2. Validate
 
 - [ ] Run backend verification: `./mvnw -T 1C clean verify`.
-- [ ] Run frontend linting: `cd baize-flow-ui && yar`.
-- [ ] Run frontend build: `cd baize-flow-ui && yarn build`.
+- [ ] Run frontend linting: `cd yak-ops-ui && yar`.
+- [ ] Run frontend build: `cd yak-ops-ui && yarn build`.
 - [ ] Validate Docker image build if publishing container artifacts.
 - [ ] Smoke test installation, login, datasource creation, job submission, monitoring, and logs.
 

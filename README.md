@@ -2,28 +2,28 @@
   <img
     src="https://github.com/user-attachments/assets/901d765c-cbd7-4f39-ae3a-de6716ae09f2"
     width="100%"
-    alt="Baize Flow Banner"
+    alt="Yak Ops Banner"
   />
 </p>
 
-<h1 align="center">Baize Flow</h1>
+<h1 align="center">Yak Ops</h1>
 
 <p align="center">
   A modern, visual, and production-oriented third-party Web UI for Apache SeaTunnel.
 </p>
 
 <p align="center">
-  <a href="https://github.com/weifuwan/baize-flow/releases">
-    <img src="https://img.shields.io/github/v/release/weifuwan/baize-flow?include_prereleases&style=flat-square" alt="Release" />
+  <a href="https://github.com/weifuwan/yak-ops/releases">
+    <img src="https://img.shields.io/github/v/release/weifuwan/yak-ops?include_prereleases&style=flat-square" alt="Release" />
   </a>
-  <a href="https://github.com/weifuwan/baize-flow/blob/main/LICENSE">
-    <img src="https://img.shields.io/github/license/weifuwan/baize-flow?style=flat-square" alt="License" />
+  <a href="https://github.com/weifuwan/yak-ops/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/weifuwan/yak-ops?style=flat-square" alt="License" />
   </a>
-  <a href="https://github.com/weifuwan/baize-flow/stargazers">
-    <img src="https://img.shields.io/github/stars/weifuwan/baize-flow?style=flat-square" alt="GitHub Stars" />
+  <a href="https://github.com/weifuwan/yak-ops/stargazers">
+    <img src="https://img.shields.io/github/stars/weifuwan/yak-ops?style=flat-square" alt="GitHub Stars" />
   </a>
-  <a href="https://github.com/weifuwan/baize-flow/issues">
-    <img src="https://img.shields.io/github/issues/weifuwan/baize-flow?style=flat-square" alt="GitHub Issues" />
+  <a href="https://github.com/weifuwan/yak-ops/issues">
+    <img src="https://img.shields.io/github/issues/weifuwan/yak-ops?style=flat-square" alt="GitHub Issues" />
   </a>
   <img src="https://img.shields.io/badge/Java-21-blue?style=flat-square" alt="Java 21" />
   <img src="https://img.shields.io/badge/Node.js-%3E%3D20-blue?style=flat-square" alt="Node.js 20+" />
@@ -33,22 +33,22 @@
 <p align="center">
   <a href="http://111.230.213.87:8000">Live Demo</a>
   ·
-  <a href="https://doc.baize-flow.com/">Documentation</a>
+  <a href="https://doc.yak-ops.com/">Documentation</a>
   ·
   <a href="http://111.230.213.87:9001/">Home</a>
   ·
-  <a href="https://github.com/weifuwan/baize-flow/issues">Issues</a>
+  <a href="https://github.com/weifuwan/yak-ops/issues">Issues</a>
 </p>
 
 ---
 
 ## Overview
 
-**Baize Flow** is an independent third-party Web UI built for **Apache SeaTunnel**.
+**Yak Ops** is an independent third-party Web UI built for **Apache SeaTunnel**.
 
 It provides a visual and practical way to create, configure, run, schedule, and monitor data synchronization jobs without manually maintaining complex SeaTunnel configuration files.
 
-With Baize Flow, users can manage data sources, build batch and streaming pipelines, configure field mappings, generate SeaTunnel job configurations, submit jobs to the SeaTunnel engine, inspect runtime logs, and monitor execution metrics from a unified Web interface.
+With Yak Ops, users can manage data sources, build batch and streaming pipelines, configure field mappings, generate SeaTunnel job configurations, submit jobs to the SeaTunnel engine, inspect runtime logs, and monitor execution metrics from a unified Web interface.
 
 > Our goal is simple: make Apache SeaTunnel easier to use in real-world data integration scenarios.
 
@@ -64,7 +64,7 @@ Configure Source, Transform, and Sink nodes visually, making complex synchroniza
 
 Create and manage both batch and real-time data synchronization tasks through a unified interface.
 
-Baize Flow supports multiple task creation modes, including visual guidance and script-based configuration.
+Yak Ops supports multiple task creation modes, including visual guidance and script-based configuration.
 
 ### Data Source Management
 
@@ -82,7 +82,7 @@ Users can configure connections, test connectivity, inspect metadata, and reuse 
 
 Configure source-to-target field mappings visually.
 
-Baize Flow also supports SQL-based transformations and automatically generates the corresponding SeaTunnel job configuration.
+Yak Ops also supports SQL-based transformations and automatically generates the corresponding SeaTunnel job configuration.
 
 ### Job Lifecycle Management
 
@@ -113,15 +113,15 @@ The built-in metrics view helps users understand job execution without requiring
 
 ### Automatic Configuration Generation
 
-Baize Flow converts visual job definitions into executable SeaTunnel configuration files.
+Yak Ops converts visual job definitions into executable SeaTunnel configuration files.
 
 This reduces repetitive configuration work and helps teams standardize data synchronization development.
 
-## Why Baize Flow?
+## Why Yak Ops?
 
 Apache SeaTunnel provides powerful data integration capabilities, but manually writing and maintaining configuration files can still be challenging in large-scale or multi-team environments.
 
-Baize Flow is designed for teams that need:
+Yak Ops is designed for teams that need:
 
 * A visual Web UI for Apache SeaTunnel
 * Standardized data source management
@@ -149,39 +149,39 @@ The following environment is supported or recommended for the current version:
 | Operating System | Linux recommended                |
 | Browser          | Latest Chrome or Edge            |
 
-> Baize Flow currently performs version validation when connecting to the SeaTunnel engine. Please use a supported SeaTunnel version.
+> Yak Ops currently performs version validation when connecting to the SeaTunnel engine. Please use a supported SeaTunnel version.
 
 ## Architecture
 
-Baize Flow uses a front-end and back-end separated architecture.
+Yak Ops uses a front-end and back-end separated architecture.
 
-For containerized deployment, Nginx serves the front-end assets and proxies API and WebSocket traffic to the Spring Boot service. The Spring Boot service connects to the Baize Flow metadata database and communicates with the configured Apache SeaTunnel engine.
+For containerized deployment, Nginx serves the front-end assets and proxies API and WebSocket traffic to the Spring Boot service. The Spring Boot service connects to the Yak Ops metadata database and communicates with the configured Apache SeaTunnel engine.
 
 <img width="1448" height="1086" alt="31db05202fb68511127f1f6dcf367466" src="https://github.com/user-attachments/assets/187f2558-3668-4cc0-9ba8-9eb8807c3b02" />
 
 
 ## Quick Start
 
-Docker Compose is the recommended way to run Baize Flow locally.
+Docker Compose is the recommended way to run Yak Ops locally.
 
 For complete installation and deployment instructions, please refer to the project documentation:
 
 **Documentation:**  
-https://doc.baize-flow.com/
+https://doc.yak-ops.com/
 
 ### Option A: Docker Compose with MySQL
 
 This mode starts the following services together:
 
 * MySQL 8.0
-* Baize Flow API
+* Yak Ops API
 * Nginx front end
 
 Clone the repository and create the environment file:
 
 ```bash
-git clone https://github.com/weifuwan/baize-flow.git
-cd baize-flow
+git clone https://github.com/weifuwan/yak-ops.git
+cd yak-ops
 cp .env.example .env
 ```
 
@@ -191,7 +191,7 @@ Build and start the services:
 docker compose up -d --build
 ```
 
-Open Baize Flow:
+Open Yak Ops:
 
 ```text
 http://localhost:9527
@@ -201,7 +201,7 @@ View the service status and logs:
 
 ```bash
 docker compose ps
-docker compose logs -f baize-flow-api
+docker compose logs -f yak-ops-api
 ```
 
 Stop the services:
@@ -223,10 +223,10 @@ docker compose up -d --build
 
 Use this mode when MySQL is already installed on the host or deployed on another server.
 
-Create the external database and execute the MySQL initialization SQL before starting Baize Flow. The SQL files are included in the distribution package under `sql/` and are also available in the source repository under:
+Create the external database and execute the MySQL initialization SQL before starting Yak Ops. The SQL files are included in the distribution package under `sql/` and are also available in the source repository under:
 
 ```text
-baize-flow-api/src/main/resources/sql/
+yak-ops-api/src/main/resources/sql/
 ```
 
 Create the environment file:
@@ -261,7 +261,7 @@ GRANT ALL PRIVILEGES ON baize_flow.* TO 'seatunnel'@'%';
 FLUSH PRIVILEGES;
 ```
 
-Start Baize Flow without starting another MySQL container:
+Start Yak Ops without starting another MySQL container:
 
 ```bash
 docker compose   --env-file .env.without-mysql   -f compose.without-mysql.yaml   up -d --build
@@ -270,7 +270,7 @@ docker compose   --env-file .env.without-mysql   -f compose.without-mysql.yaml  
 View logs:
 
 ```bash
-docker compose   --env-file .env.without-mysql   -f compose.without-mysql.yaml   logs -f baize-flow-api
+docker compose   --env-file .env.without-mysql   -f compose.without-mysql.yaml   logs -f yak-ops-api
 ```
 
 ### Option C: Build the Distribution Package from Source
@@ -286,7 +286,7 @@ Requirements:
 Build the front-end assets first:
 
 ```bash
-cd baize-flow-ui
+cd yak-ops-ui
 yarn install --frozen-lockfile
 yarn build
 cd ..
@@ -307,18 +307,18 @@ mvnw.cmd clean package -DskipTests
 The generated package is located under:
 
 ```text
-baize-flow-dist/target/
+yak-ops-dist/target/
 ```
 
 The distribution package contains:
 
 ```text
-baize-flow-<version>/
+yak-ops-<version>/
 ├── bin/
-│   ├── run-baize-flow.sh
-│   ├── start-baize-flow.sh
-│   ├── status-baize-flow.sh
-│   └── stop-baize-flow.sh
+│   ├── run-yak-ops.sh
+│   ├── start-yak-ops.sh
+│   ├── status-yak-ops.sh
+│   └── stop-yak-ops.sh
 ├── conf/
 │   ├── application.yml
 │   ├── logback-spring.xml
@@ -326,7 +326,7 @@ baize-flow-<version>/
 │       └── default.conf
 ├── jdbc-drivers/
 ├── libs/
-│   └── baize-flow-api.jar
+│   └── yak-ops-api.jar
 ├── sql/
 ├── web/
 ├── LICENSE
@@ -336,14 +336,14 @@ baize-flow-<version>/
 
 The same distribution package is used to produce both runtime images:
 
-* `baize-flow-api`: Java 21 back-end runtime
-* `baize-flow`: Nginx front end and reverse proxy
+* `yak-ops-api`: Java 21 back-end runtime
+* `yak-ops`: Nginx front end and reverse proxy
 
 For a manual Linux deployment, extract the package, review `conf/application.yml`, start the back end with the scripts under `bin/`, and configure Nginx with `conf/nginx/default.conf`.
 
 ### Connect to Apache SeaTunnel
 
-After Baize Flow starts:
+After Yak Ops starts:
 
 1. Open the SeaTunnel client management page.
 2. Add an Apache SeaTunnel 2.3.13 engine address.
@@ -366,7 +366,7 @@ Start the back end:
 
 ```bash
 ./mvnw clean install -DskipTests
-./mvnw -pl baize-flow-api spring-boot:run
+./mvnw -pl yak-ops-api spring-boot:run
 ```
 
 The default back-end port is:
@@ -380,7 +380,7 @@ The default back-end port is:
 Enter the front-end directory:
 
 ```bash
-cd baize-flow-ui
+cd yak-ops-ui
 ```
 
 Install dependencies:
@@ -399,9 +399,9 @@ yarn build
 
 Detailed installation, configuration, operation, and usage guides are available at:
 
-### Baize Flow Documentation
+### Yak Ops Documentation
 
-https://doc.baize-flow.com/
+https://doc.yak-ops.com/
 
 The documentation covers topics such as:
 
@@ -450,15 +450,15 @@ Roadmap priorities may change based on community feedback and actual usage scena
 Before using the current version, please note:
 
 * The currently validated SeaTunnel version is 2.3.13.
-* MySQL 8.0 is recommended for the Baize Flow metadata database.
+* MySQL 8.0 is recommended for the Yak Ops metadata database.
 * Some advanced SeaTunnel connector parameters may still require script-mode configuration.
 * Production deployment should use secure database credentials, persistent volumes, and controlled network access.
 * The public demo environment must not be used with sensitive data.
-* Back up the Baize Flow database before upgrading to a newer version.
+* Back up the Yak Ops database before upgrading to a newer version.
 
 Please review open issues before deploying the project in a production environment:
 
-https://github.com/weifuwan/baize-flow/issues
+https://github.com/weifuwan/yak-ops/issues
 
 ## Contributing
 
@@ -485,19 +485,19 @@ Recommended contribution workflow:
 
 Repository:
 
-https://github.com/weifuwan/baize-flow
+https://github.com/weifuwan/yak-ops
 
 Issues:
 
-https://github.com/weifuwan/baize-flow/issues
+https://github.com/weifuwan/yak-ops/issues
 
 Pull requests:
 
-https://github.com/weifuwan/baize-flow/pulls
+https://github.com/weifuwan/yak-ops/pulls
 
 ## Community
 
-If you are interested in Baize Flow, want to share feedback, or would like to participate in its development, you are welcome to join the community.
+If you are interested in Yak Ops, want to share feedback, or would like to participate in its development, you are welcome to join the community.
 
 Contributions are not limited to writing code. Documentation, testing, issue reports, feature discussions, product suggestions, and usage experience are all valuable.
 
@@ -506,12 +506,12 @@ Contributions are not limited to writing code. Documentation, testing, issue rep
     width="200"
     height="320"
     src="https://github.com/user-attachments/assets/41de5095-91af-41e6-9345-7c26496f9469"
-    alt="Baize Flow Community Group"
+    alt="Yak Ops Community Group"
   />
 </p>
 
 <p align="center">
-  Join the Baize Flow community and help build the project together.
+  Join the Yak Ops community and help build the project together.
 </p>
 
 ## Security
@@ -530,13 +530,13 @@ A dedicated security reporting process will be documented in `SECURITY.md`.
 
 ## License
 
-Baize Flow is licensed under the Apache License 2.0.
+Yak Ops is licensed under the Apache License 2.0.
 
 See the [LICENSE](./LICENSE) file for details.
 
 ## Disclaimer
 
-Baize Flow is an independent third-party project.
+Yak Ops is an independent third-party project.
 
 It is not an official Apache Software Foundation project and is not affiliated with or endorsed by the Apache Software Foundation.
 
@@ -547,13 +547,13 @@ The use of Apache SeaTunnel in this project name and documentation is intended o
 ---
 
 <p align="center">
-  Made with ❤️ by the Baize Flow community
+  Made with ❤️ by the Yak Ops community
 </p>
 
 <p align="center">
-  <a href="https://github.com/weifuwan/baize-flow">GitHub</a>
+  <a href="https://github.com/weifuwan/yak-ops">GitHub</a>
   ·
-  <a href="https://doc.baize-flow.com/">Documentation</a>
+  <a href="https://doc.yak-ops.com/">Documentation</a>
   ·
-  <a href="https://github.com/weifuwan/baize-flow/issues">Feedback</a>
+  <a href="https://github.com/weifuwan/yak-ops/issues">Feedback</a>
 </p>

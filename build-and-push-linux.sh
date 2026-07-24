@@ -3,14 +3,14 @@
 set -Eeuo pipefail
 
 # ============================================================
-# Baize Flow Docker image publishing configuration
+# Yak Ops Docker image publishing configuration
 # Uses the local Docker image store and the default Docker builder.
 # It does not create a Buildx builder, pull base images, or run Maven/npm builds.
 # ============================================================
 DOCKERHUB_USERNAME="weifuwan"
 VERSION="1.0.0"
-BACKEND_REPOSITORY="baize-flow-api"
-FRONTEND_REPOSITORY="baize-flow"
+BACKEND_REPOSITORY="yak-ops-api"
+FRONTEND_REPOSITORY="yak-ops"
 PUSH_LATEST="true"
 
 # Local base images required by Dockerfile.
@@ -130,13 +130,13 @@ Build mode           : default Docker builder, single platform
 Distribution build   : skipped (uses existing tar.gz)
 CONFIG
 
-write_step "Checking prebuilt Baize Flow distribution"
+write_step "Checking prebuilt Yak Ops distribution"
 shopt -s nullglob
-DIST_FILES=(./baize-flow-dist/target/baize-flow-*.tar.gz)
+DIST_FILES=(./yak-ops-dist/target/yak-ops-*.tar.gz)
 shopt -u nullglob
 
 if (( ${#DIST_FILES[@]} == 0 )); then
-    printf 'No distribution archive found at baize-flow-dist/target/baize-flow-*.tar.gz\n' >&2
+    printf 'No distribution archive found at yak-ops-dist/target/yak-ops-*.tar.gz\n' >&2
     exit 1
 fi
 

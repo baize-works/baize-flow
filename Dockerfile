@@ -3,8 +3,8 @@
 # =========================
 FROM scratch AS dist-artifact
 
-COPY baize-flow-dist/target/baize-flow-*.tar.gz \
-     /baize-flow.tar.gz
+COPY yak-ops-dist/target/yak-ops-*.tar.gz \
+     /yak-ops.tar.gz
 
 
 # =========================
@@ -16,49 +16,49 @@ ARG VERSION=dev
 ARG VCS_REF=unknown
 ARG BUILD_DATE=unknown
 
-LABEL org.opencontainers.image.title="Baize Flow API" \
-      org.opencontainers.image.description="Baize Flow backend service" \
+LABEL org.opencontainers.image.title="Yak Ops API" \
+      org.opencontainers.image.description="Yak Ops backend service" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.created="${BUILD_DATE}"
 
-ENV BAIZE_FLOW_HOME=/opt/baize-flow \
+ENV YAK_OPS_HOME=/opt/yak-ops \
     JAVA_OPTS="" \
     APP_OPTS="" \
     SERVER_PORT=9527 \
     SPRING_PROFILES_ACTIVE=mysql \
-    BAIZE_FLOW_DATABASE_TYPE=mysql \
-    BAIZE_FLOW_DATABASE_HOST=mysql \
-    BAIZE_FLOW_DATABASE_PORT=3306 \
-    BAIZE_FLOW_DATABASE_NAME=baize_flow \
+    YAK_OPS_DATABASE_TYPE=mysql \
+    YAK_OPS_DATABASE_HOST=mysql \
+    YAK_OPS_DATABASE_PORT=3306 \
+    YAK_OPS_DATABASE_NAME=baize_flow \
     SPRING_DATASOURCE_URL="jdbc:mysql://mysql:3306/baize_flow?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&allowPublicKeyRetrieval=true" \
     SPRING_DATASOURCE_USERNAME=seatunnel \
     SPRING_DATASOURCE_PASSWORD=seatunnel
 
-WORKDIR ${BAIZE_FLOW_HOME}
+WORKDIR ${YAK_OPS_HOME}
 
 COPY --from=dist-artifact \
-     /baize-flow.tar.gz \
-     /tmp/baize-flow.tar.gz
+     /yak-ops.tar.gz \
+     /tmp/yak-ops.tar.gz
 
 RUN set -eux; \
-    mkdir -p "${BAIZE_FLOW_HOME}"; \
-    tar -xzf /tmp/baize-flow.tar.gz \
+    mkdir -p "${YAK_OPS_HOME}"; \
+    tar -xzf /tmp/yak-ops.tar.gz \
         --strip-components=1 \
-        -C "${BAIZE_FLOW_HOME}"; \
-    rm -f /tmp/baize-flow.tar.gz; \
-    chmod +x "${BAIZE_FLOW_HOME}"/bin/*.sh; \
+        -C "${YAK_OPS_HOME}"; \
+    rm -f /tmp/yak-ops.tar.gz; \
+    chmod +x "${YAK_OPS_HOME}"/bin/*.sh; \
     mkdir -p \
-        "${BAIZE_FLOW_HOME}/logs" \
-        "${BAIZE_FLOW_HOME}/jdbc-drivers"; \
-    test -f "${BAIZE_FLOW_HOME}/libs/baize-flow-api.jar"
+        "${YAK_OPS_HOME}/logs" \
+        "${YAK_OPS_HOME}/jdbc-drivers"; \
+    test -f "${YAK_OPS_HOME}/libs/yak-ops-api.jar"
 
 EXPOSE 9527
 
-VOLUME ["/opt/baize-flow/logs","/opt/baize-flow/jdbc-drivers"]
+VOLUME ["/opt/yak-ops/logs","/opt/yak-ops/jdbc-drivers"]
 
-ENTRYPOINT ["/opt/baize-flow/bin/run-baize-flow.sh"]
+ENTRYPOINT ["/opt/yak-ops/bin/run-yak-ops.sh"]
 
 
 # =========================
@@ -70,31 +70,31 @@ ARG VERSION=dev
 ARG VCS_REF=unknown
 ARG BUILD_DATE=unknown
 
-LABEL org.opencontainers.image.title="Baize Flow" \
-      org.opencontainers.image.description="Baize Flow frontend and reverse proxy" \
+LABEL org.opencontainers.image.title="Yak Ops" \
+      org.opencontainers.image.description="Yak Ops frontend and reverse proxy" \
       org.opencontainers.image.licenses="Apache-2.0" \
       org.opencontainers.image.version="${VERSION}" \
       org.opencontainers.image.revision="${VCS_REF}" \
       org.opencontainers.image.created="${BUILD_DATE}"
 
 COPY --from=dist-artifact \
-     /baize-flow.tar.gz \
-     /tmp/baize-flow.tar.gz
+     /yak-ops.tar.gz \
+     /tmp/yak-ops.tar.gz
 
 RUN set -eux; \
-    mkdir -p /tmp/baize-flow; \
-    tar -xzf /tmp/baize-flow.tar.gz \
+    mkdir -p /tmp/yak-ops; \
+    tar -xzf /tmp/yak-ops.tar.gz \
         --strip-components=1 \
-        -C /tmp/baize-flow; \
-    test -f /tmp/baize-flow/web/index.html; \
-    test -f /tmp/baize-flow/conf/nginx/default.conf; \
+        -C /tmp/yak-ops; \
+    test -f /tmp/yak-ops/web/index.html; \
+    test -f /tmp/yak-ops/conf/nginx/default.conf; \
     rm -rf /usr/share/nginx/html/*; \
-    cp -r /tmp/baize-flow/web/. /usr/share/nginx/html/; \
-    cp /tmp/baize-flow/conf/nginx/default.conf \
+    cp -r /tmp/yak-ops/web/. /usr/share/nginx/html/; \
+    cp /tmp/yak-ops/conf/nginx/default.conf \
        /etc/nginx/conf.d/default.conf; \
     rm -rf \
-        /tmp/baize-flow \
-        /tmp/baize-flow.tar.gz
+        /tmp/yak-ops \
+        /tmp/yak-ops.tar.gz
 
 EXPOSE 80
 

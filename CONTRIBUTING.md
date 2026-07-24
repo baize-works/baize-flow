@@ -1,6 +1,6 @@
-# Contributing to Baize Flow
+# Contributing to Yak Ops
 
-Thank you for your interest in contributing to Baize Flow. Contributions of all kinds are welcome, including bug reports, feature requests, documentation updates, tests, and code.
+Thank you for your interest in contributing to Yak Ops. Contributions of all kinds are welcome, including bug reports, feature requests, documentation updates, tests, and code.
 
 ## Code of Conduct
 
@@ -38,7 +38,7 @@ For faster local iteration when tests are not needed:
 ### Frontend
 
 ```bash
-cd baize-flow-ui
+cd yak-ops-ui
 yarn
 yarn build
 ```

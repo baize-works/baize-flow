@@ -51,7 +51,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: baize-flow-ui
+        working-directory: yak-ops-ui
 
     steps:
       - name: Checkout
@@ -62,7 +62,7 @@ jobs:
         with:
           node-version: '22.22.1'
           cache: yarn
-          cache-dependency-path: baize-flow-ui/yarn.lock
+          cache-dependency-path: yak-ops-ui/yarn.lock
 
       - name: Enable Corepack and set Yarn
         run: |
