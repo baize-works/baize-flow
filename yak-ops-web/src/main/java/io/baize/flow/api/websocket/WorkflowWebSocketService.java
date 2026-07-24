@@ -1,6 +1,7 @@
 package io.baize.flow.api.websocket;
 
 import jakarta.annotation.Resource;
+import io.baize.flow.api.port.WorkflowMetricsPublisher;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.Map;
  * </p>
  */
 @Service
-public class WorkflowWebSocketService {
+public class WorkflowWebSocketService implements WorkflowMetricsPublisher {
 
     /**
      * Spring messaging template for sending WebSocket messages.
@@ -34,6 +35,11 @@ public class WorkflowWebSocketService {
      * @param channel logical channel name
      * @param message message payload
      */
+    @Override
+    public void publish(String channel, Map<String, Object> message) {
+        sendMessage(channel, message);
+    }
+
     public void sendMessage(String channel, Map<String, Object> message) {
         messagingTemplate.convertAndSend("/topic/log/test", message);
     }

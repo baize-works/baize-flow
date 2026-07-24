@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.Data;
 import org.apache.seatunnel.plugin.alarm.api.AlarmChannelFactory;
-import io.baize.flow.api.alarm.plugin.AlarmPluginManager;
+import io.baize.flow.api.port.AlarmChannelCatalog;
 import io.baize.flow.api.service.AlarmChannelService;
 import io.baize.flow.api.service.AlarmRecordService;
 import io.baize.flow.api.service.AlarmRuleService;
@@ -44,7 +44,7 @@ public class AlarmController {
     private AlarmRecordService alarmRecordService;
 
     @Resource
-    private AlarmPluginManager alarmPluginManager;
+    private AlarmChannelCatalog alarmPluginManager;
 
     // -------------------- channel types (from SPI) --------------------
 
