@@ -1,7 +1,7 @@
-package io.baize.flow.api.quartz;
+package io.baize.flow.infrastructure.scheduler;
 
 import lombok.extern.slf4j.Slf4j;
-import io.baize.flow.api.service.BatchJobExecutorService;
+import io.baize.flow.api.service.application.job.ExecuteJobUseCase;
 import io.baize.flow.api.service.JobScheduleService;
 import io.baize.flow.domain.enums.JobSubmitStage;
 import io.baize.flow.domain.enums.RunMode;
@@ -23,12 +23,12 @@ public class QuartzJob implements Job {
     private static final String KEY_JOB_SCHEDULE_ID = "jobScheduleId";
 
     private final JobScheduleService scheduleService;
-    private final BatchJobExecutorService executorService;
+    private final ExecuteJobUseCase executeJobUseCase;
 
     public QuartzJob(JobScheduleService scheduleService,
-                     BatchJobExecutorService executorService) {
+                     ExecuteJobUseCase executeJobUseCase) {
         this.scheduleService = scheduleService;
-        this.executorService = executorService;
+        this.executeJobUseCase = executeJobUseCase;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class QuartzJob implements Job {
         logExecutionContext(context);
 
         try {
-            Long instanceId = executorService.jobExecute(jobDefineId, RunMode.SCHEDULED);
+            Long instanceId = executeJobUseCase.execute(jobDefineId, RunMode.SCHEDULED);
 
             log.info("Quartz fire: jobDefineId={}, instanceId={}, scheduleId={}, fireTime={}",
                     jobDefineId, instanceId, scheduleId, context.getFireTime());

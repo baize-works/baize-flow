@@ -1,4 +1,4 @@
-package io.baize.flow.api.client.scheduler;
+package io.baize.flow.infrastructure.scheduler;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -7,7 +7,7 @@ import io.baize.flow.common.enums.SeaTunnelClientHealthStatusEnum;
 import io.baize.flow.dao.entity.SeaTunnelClient;
 import io.baize.flow.dao.repository.SeaTunnelClientDao;
 import io.baize.flow.engine.client.handler.ZetaEngineFailureHandler;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.api.service.application.job.CheckEngineHealthUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -26,7 +26,7 @@ public class ZetaEngineHealthCheckScheduler {
     private SeaTunnelClientDao seaTunnelClientDao;
 
     @Resource
-    private SeaTunnelRestClient seaTunnelRestClient;
+    private CheckEngineHealthUseCase checkEngineHealthUseCase;
 
     @Resource
     private ZetaEngineFailureHandler zetaEngineFailureHandler;
@@ -70,7 +70,7 @@ public class ZetaEngineHealthCheckScheduler {
              * 使用 clientId 探活。
              * 这样 SeaTunnelRestClient 可以自动解析 baseUrl 和 Basic Auth。
              */
-            seaTunnelRestClient.overview(clientId, null);
+            if (!checkEngineHealthUseCase.check(clientId)) { throw new IllegalStateException("Engine health probe reported unhealthy"); }
 
             failureCounter.remove(clientId);
 
