@@ -83,9 +83,7 @@ function parseStringValues(value?: string): string[] {
  * 生成任务选项名称。
  */
 function getJobOptionLabel(job: JobDefinitionOption) {
-  return job.type === 'batch'
-    ? `[离线] ${job.jobName}`
-    : `[实时] ${job.jobName}`;
+  return `[离线] ${job.jobName}`;
 }
 
 const AddOrEditRuleModal = forwardRef<

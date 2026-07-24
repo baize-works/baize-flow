@@ -95,7 +95,6 @@ export async function fetchAlarmRecords(
 // -------------------- 任务定义合并拉取 --------------------
 
 const BATCH_DEFINITION_API = '/api/v1/job/batch-definition';
-const STREAMING_DEFINITION_API = '/api/v1/job/streaming-definition';
 
 interface JobDefinitionPageItem {
   id: number;
@@ -108,21 +107,15 @@ interface JobDefinitionPageResult {
 }
 
 /**
- * 并发拉取离线 + 实时任务定义，合并为下拉选项。
+ * 拉取离线任务定义，作为下拉选项。
  * 后端分页接口返回 { code, data: { bizData, pagination } }。
  */
 export async function fetchAllJobDefinitions(): Promise<JobDefinitionOption[]> {
   const body = { pageNo: 1, pageSize: 1000 };
-  const [batchRes, streamRes] = await Promise.all([
-    HttpUtils.post<JobDefinitionPageResult>(
-      `${BATCH_DEFINITION_API}/page`,
-      body,
-    ).catch(() => null),
-    HttpUtils.post<JobDefinitionPageResult>(
-      `${STREAMING_DEFINITION_API}/page`,
-      body,
-    ).catch(() => null),
-  ]);
+  const batchRes = await HttpUtils.post<JobDefinitionPageResult>(
+    `${BATCH_DEFINITION_API}/page`,
+    body,
+  ).catch(() => null);
 
   const result: JobDefinitionOption[] = [];
 
@@ -136,15 +129,6 @@ export async function fetchAllJobDefinitions(): Promise<JobDefinitionOption[]> {
     });
   }
 
-  const streamList = (streamRes as ApiResponse<JobDefinitionPageResult> | null)
-    ?.data?.bizData;
-  if (Array.isArray(streamList)) {
-    streamList.forEach((item) => {
-      if (item?.id != null && item?.jobName) {
-        result.push({ id: item.id, jobName: item.jobName, type: 'streaming' });
-      }
-    });
-  }
 
   return result;
 }

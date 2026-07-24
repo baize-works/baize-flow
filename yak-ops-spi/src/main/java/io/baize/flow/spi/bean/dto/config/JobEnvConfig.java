@@ -12,7 +12,7 @@ public class JobEnvConfig {
 
     /**
      * SeaTunnel env.job.mode
-     * BATCH / STREAMING
+     * BATCH
      */
     private JobMode jobMode;
 

@@ -9,7 +9,7 @@ import React, { FC, ReactNode } from "react";
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 import { createPortal } from "react-dom";
 
-type RunLogInstanceType = "BATCH" | "STREAMING" | string;
+type RunLogInstanceType = "BATCH" | string;
 
 type DrawerHeight = number | `${number}px` | `${number}vh`;
 
@@ -25,14 +25,12 @@ interface RunLogDrawerProps {
   /**
    * 任务实例 ID。
    * 离线任务：t_baize_flow_job_instance.id
-   * 实时任务：t_baize_flow_streaming_job_instance.id
    */
   instanceId?: string | number;
 
   /**
    * 实例类型。
    * BATCH: 离线任务实例
-   * STREAMING: 实时任务实例
    */
   jobMode?: RunLogInstanceType;
 

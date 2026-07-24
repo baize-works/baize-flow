@@ -16,7 +16,7 @@ export interface BasicConfig {
 }
 
 export interface EnvConfig {
-  jobMode: "BATCH" | "STREAMING";
+  jobMode: "BATCH";
   parallelism: number;
 }
 

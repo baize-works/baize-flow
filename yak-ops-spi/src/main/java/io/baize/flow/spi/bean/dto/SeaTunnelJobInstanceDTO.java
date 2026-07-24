@@ -100,9 +100,9 @@ public class SeaTunnelJobInstanceDTO extends PaginationBaseDTO {
     private Date endTime;
 
     @Schema(
-            description = "Job type (BATCH or STREAMING)",
+            description = "Job type (BATCH)",
             example = "BATCH",
-            allowableValues = {"BATCH", "STREAMING"}
+            allowableValues = {"BATCH"}
     )
     private JobMode jobType;
 

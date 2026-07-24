@@ -147,11 +147,8 @@ public enum Status {
     STOP_JOB_SCHEDULE_ERROR(11603, "stop job schedule error", "停止任务调度失败"),
 
     QUERY_BATCH_JOB_INSTANCE_ERROR(11701, "query batch job instance error", "查询批处理任务实例失败"),
-    QUERY_STREAMING_JOB_INSTANCE_ERROR(11701, "query batch job instance error", "查询批处理任务实例失败"),
     BATCH_JOB_INSTANCE_NOT_EXIST(11702, "batch job instance not exists", "批处理任务实例不存在"),
-    STREAMING_JOB_INSTANCE_NOT_EXIST(11702, "streaming job instance not exists", "实时任务实例不存在"),
     QUERY_BATCH_JOB_INSTANCE_LOG_ERROR(11703, "query batch job instance log error", "查询批处理任务实例日志失败"),
-    QUERY_STREAMING_JOB_INSTANCE_LOG_ERROR(11703, "query streaming job instance log error", "查询实时任务实例日志失败"),
     BATCH_JOB_INSTANCE_LOG_NOT_EXIST(11704, "batch job instance log not exists", "批处理任务实例日志不存在"),
     CREATE_BATCH_JOB_INSTANCE_ERROR(11705, "create batch job instance error", "创建批处理任务实例失败"),
     BUILD_JOB_INSTANCE_CONFIG_ERROR(11706, "build job instance config error", "构建任务实例配置失败"),

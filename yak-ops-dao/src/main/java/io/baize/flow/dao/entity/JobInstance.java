@@ -32,7 +32,7 @@ public class JobInstance {
     private RunMode runMode;
 
     /**
-     * Job mode, such as BATCH / STREAMING
+     * Job mode, such as BATCH
      */
     private JobMode jobMode;
 

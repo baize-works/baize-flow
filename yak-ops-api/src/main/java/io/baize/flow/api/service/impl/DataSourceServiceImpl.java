@@ -14,7 +14,6 @@ import io.baize.flow.core.exceptions.ServiceException;
 import io.baize.flow.dao.entity.DataSource;
 import io.baize.flow.dao.repository.DataSourceDao;
 import io.baize.flow.dao.repository.JobDefinitionDao;
-import io.baize.flow.dao.repository.StreamingJobDefinitionDao;
 import io.baize.flow.spi.bean.dto.DataSourceDTO;
 import io.baize.flow.spi.bean.entity.PaginationResult;
 import io.baize.flow.spi.bean.vo.DBOptionVO;
@@ -50,8 +49,6 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
     @Resource
     private JobDefinitionDao jobDefinitionDao;
 
-    @Resource
-    private StreamingJobDefinitionDao streamingJobDefinitionDao;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -314,9 +311,7 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
 
     private void checkDataSourceNotUsed(Long datasourceId) {
         boolean usedByBatchJob = jobDefinitionDao.existsByDatasourceId(datasourceId);
-        boolean usedByStreamingJob = streamingJobDefinitionDao.existsByDatasourceId(datasourceId);
-
-        if (usedByBatchJob || usedByStreamingJob) {
+        if (usedByBatchJob) {
             throw new ServiceException("The data source is currently used by a job and cannot be deleted."
             );
         }
@@ -324,17 +319,14 @@ public class DataSourceServiceImpl extends BaseServiceImpl implements DataSource
 
     private void checkDataSourcesNotUsed(List<Long> datasourceIds) {
         List<Long> batchReferencedIds = jobDefinitionDao.selectReferencedDatasourceIds(datasourceIds);
-        List<Long> streamingReferencedIds = streamingJobDefinitionDao.selectReferencedDatasourceIds(datasourceIds);
-
-        List<Long> referencedIds = java.util.stream.Stream
-                .concat(batchReferencedIds.stream(), streamingReferencedIds.stream())
+        List<Long> referencedIds = batchReferencedIds.stream()
                 .distinct()
                 .collect(Collectors.toList());
 
         if (!referencedIds.isEmpty()) {
             throw new ServiceException(
                     Status.REQUEST_PARAMS_NOT_VALID_ERROR,
-                    "Data sources are used by batch or streaming job definitions and cannot be deleted. datasourceIds=" + referencedIds
+                    "Data sources are used by batch job definitions and cannot be deleted. datasourceIds=" + referencedIds
             );
         }
     }

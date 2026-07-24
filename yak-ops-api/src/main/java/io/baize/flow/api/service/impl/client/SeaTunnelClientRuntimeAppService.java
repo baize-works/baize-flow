@@ -2,15 +2,12 @@ package io.baize.flow.api.service.impl.client;
 
 import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
-import io.baize.flow.common.enums.JobMode;
 import io.baize.flow.core.exceptions.ServiceException;
 import io.baize.flow.core.utils.MetricValueParser;
 import io.baize.flow.dao.entity.JobInstance;
 import io.baize.flow.dao.entity.SeaTunnelClient;
-import io.baize.flow.dao.entity.StreamingJobInstance;
 import io.baize.flow.dao.repository.JobInstanceDao;
 import io.baize.flow.dao.repository.SeaTunnelClientDao;
-import io.baize.flow.dao.repository.StreamingJobInstanceDao;
 import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
 import io.baize.flow.spi.bean.vo.SeaTunnelClientMetricsVO;
 import io.baize.flow.spi.enums.Status;
@@ -25,8 +22,7 @@ import java.util.Map;
  * <p>This service is responsible for loading runtime metrics, job logs,
  * checkpoint overview, and checkpoint history from the SeaTunnel engine.</p>
  *
- * <p>The service also resolves batch and streaming job instances before querying
- * engine-side logs, so the frontend can use one unified log API.</p>
+ * <p>The service resolves batch job instances before querying engine-side logs.</p>
  */
 @Service
 public class SeaTunnelClientRuntimeAppService {
@@ -37,8 +33,6 @@ public class SeaTunnelClientRuntimeAppService {
     @Resource
     private JobInstanceDao jobInstanceDao;
 
-    @Resource
-    private StreamingJobInstanceDao streamingJobInstanceDao;
 
     @Resource
     private SeaTunnelRestClient seaTunnelRestClient;
@@ -85,12 +79,8 @@ public class SeaTunnelClientRuntimeAppService {
     /**
      * Queries engine logs by job instance id.
      *
-     * <p>If job mode is provided, the method will query the corresponding batch or
-     * streaming instance directly. Otherwise, it will try to resolve the instance
-     * from batch jobs first, then from streaming jobs.</p>
-     *
-     * @param instanceId job instance id
-     * @param jobMode optional job mode, such as BATCH or STREAMING
+     * @param instanceId batch job instance id
+     * @param jobMode optional job mode (BATCH)
      * @return engine log content in JSON format
      */
     public String logsByInstanceId(Long instanceId, String jobMode) {
@@ -99,18 +89,6 @@ public class SeaTunnelClientRuntimeAppService {
                     Status.INTERNAL_SERVER_ERROR_ARGS,
                     "instanceId 不能为空"
             );
-        }
-
-        if (StringUtils.isNotBlank(jobMode)) {
-            JobMode mode = resolveJobMode(jobMode);
-
-            if (mode == JobMode.BATCH) {
-                return getOfflineInstanceLogs(instanceId);
-            }
-
-            if (mode == JobMode.STREAMING) {
-                return getStreamingInstanceLogs(instanceId);
-            }
         }
 
         JobInstance offlineInstance = jobInstanceDao.queryById(instanceId);
@@ -123,17 +101,6 @@ public class SeaTunnelClientRuntimeAppService {
             );
         }
 
-        StreamingJobInstance streamingInstance =
-                streamingJobInstanceDao.queryById(instanceId);
-
-        if (streamingInstance != null) {
-            return getEngineLogs(
-                    streamingInstance.getClientId(),
-                    streamingInstance.getEngineJobId(),
-                    "STREAMING",
-                    instanceId
-            );
-        }
 
         throw new ServiceException(
                 Status.INTERNAL_SERVER_ERROR_ARGS,
@@ -209,27 +176,6 @@ public class SeaTunnelClientRuntimeAppService {
         );
     }
 
-    /**
-     * Gets engine logs for a streaming job instance.
-     */
-    private String getStreamingInstanceLogs(Long instanceId) {
-        StreamingJobInstance instance =
-                streamingJobInstanceDao.queryById(instanceId);
-
-        if (instance == null) {
-            throw new ServiceException(
-                    Status.INTERNAL_SERVER_ERROR_ARGS,
-                    "实时任务实例不存在, instanceId=" + instanceId
-            );
-        }
-
-        return getEngineLogs(
-                instance.getClientId(),
-                instance.getEngineJobId(),
-                "STREAMING",
-                instanceId
-        );
-    }
 
     /**
      * Queries engine logs through SeaTunnel REST API.
@@ -263,19 +209,6 @@ public class SeaTunnelClientRuntimeAppService {
         return seaTunnelRestClient.jobLogs(clientId, engineJobId, "json");
     }
 
-    /**
-     * Resolves job mode from request parameter.
-     */
-    private JobMode resolveJobMode(String jobMode) {
-        try {
-            return JobMode.valueOf(jobMode.trim().toUpperCase());
-        } catch (Exception e) {
-            throw new ServiceException(
-                    Status.INTERNAL_SERVER_ERROR_ARGS,
-                    "不支持的任务模式: " + jobMode
-            );
-        }
-    }
 
     /**
      * Validates client id and engine job id before querying checkpoint information.

@@ -9,7 +9,6 @@ type MenuItem = {
 const items: MenuItem[] = [
   { key: "1", icon: "🏠", label: "Dashboard" },
   { key: "2", icon: "📦", label: "Batch Jobs" },
-  { key: "3", icon: "⚡", label: "Streaming Jobs" },
   { key: "4", icon: "🧩", label: "Connectors" },
   { key: "5", icon: "📊", label: "Monitoring" },
   { key: "6", icon: "⚙️", label: "Settings" },

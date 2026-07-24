@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import io.baize.flow.common.enums.SeaTunnelClientHealthStatusEnum;
 import io.baize.flow.dao.repository.JobInstanceDao;
 import io.baize.flow.dao.repository.SeaTunnelClientDao;
-import io.baize.flow.dao.repository.StreamingJobInstanceDao;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,8 +20,6 @@ public class ZetaEngineFailureHandler {
     @Resource
     private JobInstanceDao jobInstanceDao;
 
-    @Resource
-    private StreamingJobInstanceDao streamingJobInstanceDao;
 
     @Transactional(rollbackFor = Exception.class)
     public void markClientLive(Long clientId) {
@@ -42,13 +39,11 @@ public class ZetaEngineFailureHandler {
         );
 
         int batchCount = jobInstanceDao.failRunningInstancesByClientId(clientId, errorMessage);
-        int streamingCount = streamingJobInstanceDao.failRunningInstancesByClientId(clientId, errorMessage);
 
         log.warn(
-                "Zeta engine unavailable, marked running instances as FAILED, clientId={}, batchCount={}, streamingCount={}",
+                "Zeta engine unavailable, marked running instances as FAILED, clientId={}, batchCount={}",
                 clientId,
-                batchCount,
-                streamingCount
+                batchCount
         );
     }
 }

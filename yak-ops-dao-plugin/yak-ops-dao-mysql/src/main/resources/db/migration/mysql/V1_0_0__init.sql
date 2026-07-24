@@ -189,7 +189,7 @@ CREATE TABLE `t_baize_flow_job_definition`
     `job_name`             varchar(255) NOT NULL COMMENT '任务名称',
     `job_desc`             varchar(500)          DEFAULT NULL COMMENT '任务描述',
     `mode`                 varchar(32)  NOT NULL COMMENT 'SCRIPT / GUIDE_SINGLE / GUIDE_MULTI',
-    `job_type`             varchar(32)  NOT NULL DEFAULT 'BATCH' COMMENT '任务类型：BATCH / STREAMING',
+    `job_type`             varchar(32)  NOT NULL DEFAULT 'BATCH' COMMENT '任务类型：BATCH',
     `client_id`            bigint                DEFAULT NULL COMMENT '桥接客户端ID',
     `job_version`          int          NOT NULL DEFAULT 1 COMMENT '任务版本号',
     `release_state`        varchar(32)           DEFAULT NULL COMMENT '任务状态',
@@ -241,7 +241,7 @@ CREATE TABLE `t_baize_flow_job_instance`
     `submit_time`       datetime             DEFAULT NULL COMMENT '提交时间',
     `start_time`        datetime             DEFAULT NULL COMMENT '开始时间',
     `end_time`          datetime             DEFAULT NULL COMMENT '结束时间',
-    `job_mode`          varchar(32)          DEFAULT NULL COMMENT '任务模式：BATCH / STREAMING',
+    `job_mode`          varchar(32)          DEFAULT NULL COMMENT '任务模式：BATCH',
     `create_time`       datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
     `update_time`       datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
@@ -326,174 +326,11 @@ CREATE TABLE `t_baize_flow_job_table_metrics`
     KEY                 `idx_create_time` (`create_time`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='任务表级运行指标表';
 
-CREATE TABLE `t_baize_flow_streaming_job_definition`
-(
-    `id`                   bigint NOT NULL COMMENT '主键ID',
-    `job_name`             varchar(255)  DEFAULT NULL COMMENT '任务名称',
-    `job_desc`             varchar(1000) DEFAULT NULL COMMENT '任务描述',
-    `mode`                 varchar(64)   DEFAULT NULL COMMENT '任务定义模式：GUIDE_SINGLE / GUIDE_MULTI / SCRIPT',
-    `job_type`             varchar(64)   DEFAULT NULL COMMENT '任务类型：BATCH / STREAMING',
-    `client_id`            bigint        DEFAULT NULL COMMENT 'SeaTunnel Client ID',
-    `job_version`          int           DEFAULT 1 COMMENT '任务当前版本',
-    `release_state`        varchar(64)   DEFAULT NULL COMMENT '发布状态：ONLINE / OFFLINE',
-    `source_type`          varchar(128)  DEFAULT NULL COMMENT '源端类型',
-    `sink_type`            varchar(128)  DEFAULT NULL COMMENT '目标端类型',
-    `source_table`         varchar(512)  DEFAULT NULL COMMENT '源表',
-    `sink_table`           varchar(512)  DEFAULT NULL COMMENT '目标表',
-    `source_datasource_id` bigint NOT NULL COMMENT '源数据源ID',
-    `sink_datasource_id`   bigint NOT NULL COMMENT '目标数据源ID',
-    `create_time`          datetime      DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`          datetime      DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    KEY                    `idx_streaming_job_name` (`job_name`),
-    KEY                    `idx_streaming_client_id` (`client_id`),
-    KEY                    `idx_streaming_release_state` (`release_state`),
-    KEY                    `idx_streaming_source_datasource_id` (`source_datasource_id`),
-    KEY                    `idx_streaming_sink_datasource_id` (`sink_datasource_id`),
-    KEY                    `idx_streaming_create_time` (`create_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='实时任务定义表';
 
-CREATE TABLE `t_baize_flow_streaming_job_definition_content`
-(
-    `id`                     bigint NOT NULL COMMENT '主键ID',
-    `job_definition_id`      bigint NOT NULL COMMENT '任务定义ID',
-    `version`                int    NOT NULL COMMENT '任务版本',
-    `mode`                   varchar(64) DEFAULT NULL COMMENT '任务定义模式：GUIDE_SINGLE / GUIDE_MULTI / SCRIPT',
-    `content_schema_version` int         DEFAULT 1 COMMENT '内容结构版本',
-    `definition_content`     longtext COMMENT '任务定义内容，向导模式一般存 workflow，脚本模式一般存 HOCON',
-    `env_config`             longtext COMMENT '环境配置',
-    `checkpoint_config`      longtext COMMENT 'Checkpoint 配置',
-    `create_time`            datetime    DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`            datetime    DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `uk_streaming_job_definition_version` (`job_definition_id`, `version`),
-    KEY                      `idx_streaming_content_job_definition_id` (`job_definition_id`),
-    KEY                      `idx_streaming_content_mode` (`mode`),
-    KEY                      `idx_streaming_content_create_time` (`create_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='实时任务定义内容表';
 
-CREATE TABLE `t_baize_flow_streaming_job_instance`
-(
-    `id`                bigint      NOT NULL COMMENT '主键ID',
-    `job_definition_id` bigint      NOT NULL COMMENT '实时任务定义ID',
-    `client_id`         bigint               DEFAULT NULL COMMENT 'SeaTunnel Client ID',
-    `run_mode`          varchar(32) NOT NULL COMMENT '运行模式：MANUAL / SCHEDULE / RETRY',
-    `job_status`        varchar(32) NOT NULL COMMENT '实例状态',
-    `trigger_source`    varchar(64)          DEFAULT NULL COMMENT '触发来源',
-    `retry_count`       int         NOT NULL DEFAULT 0 COMMENT '重试次数',
-    `engine_job_id`     varchar(64)          DEFAULT NULL COMMENT 'SeaTunnel Engine Job ID',
-    `runtime_config`    longtext COMMENT '本次执行使用的 HOCON 配置',
-    `log_path`          varchar(512)         DEFAULT NULL COMMENT '日志路径',
-    `error_message`     text COMMENT '错误摘要',
-    `submit_time`       datetime             DEFAULT NULL COMMENT '提交时间',
-    `start_time`        datetime             DEFAULT NULL COMMENT '开始时间',
-    `end_time`          datetime             DEFAULT NULL COMMENT '结束时间',
-    `checkpoint_path`   varchar(1024)        DEFAULT NULL COMMENT 'Checkpoint 路径',
-    `savepoint_path`    varchar(1024)        DEFAULT NULL COMMENT 'Savepoint 路径',
-    `last_collect_time` datetime             DEFAULT NULL COMMENT '最后一次指标采集时间',
-    `create_time`       datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`       datetime    NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`id`),
-    KEY                 `idx_streaming_instance_definition_id` (`job_definition_id`),
-    KEY                 `idx_streaming_instance_status` (`job_status`),
-    KEY                 `idx_streaming_instance_engine_job_id` (`engine_job_id`),
-    KEY                 `idx_streaming_instance_create_time` (`create_time`),
-    KEY                 `idx_streaming_instance_definition_status` (`job_definition_id`, `job_status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='实时任务运行实例表';
 
-CREATE TABLE `t_baize_flow_streaming_job_metrics_current`
-(
-    `job_instance_id`         bigint         NOT NULL COMMENT 'Web侧实例ID',
-    `job_definition_id`       bigint         NOT NULL COMMENT '任务定义ID',
-    `engine_job_id`           varchar(64)             DEFAULT NULL COMMENT 'SeaTunnel Engine Job ID',
-    `client_id`               bigint                  DEFAULT NULL COMMENT 'SeaTunnel Client ID',
-    `job_status`              varchar(32)             DEFAULT NULL COMMENT '引擎返回的任务状态',
-    `read_row_count`          bigint         NOT NULL DEFAULT 0 COMMENT '读取行数',
-    `write_row_count`         bigint         NOT NULL DEFAULT 0 COMMENT '写入行数',
-    `read_qps`                decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '读取QPS',
-    `write_qps`               decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '写入QPS',
-    `read_bytes`              bigint         NOT NULL DEFAULT 0 COMMENT '读取字节数',
-    `write_bytes`             bigint         NOT NULL DEFAULT 0 COMMENT '写入字节数',
-    `read_bps`                decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '读取BPS，单位：字节/秒',
-    `write_bps`               decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '写入BPS，单位：字节/秒',
-    `intermediate_queue_size` bigint         NOT NULL DEFAULT 0 COMMENT '中间队列大小',
-    `lag_count`               bigint         NOT NULL DEFAULT 0 COMMENT '滞后数量',
-    `record_delay`            bigint         NOT NULL DEFAULT 0 COMMENT '数据延迟，单位：毫秒',
-    `pipeline_count`          int            NOT NULL DEFAULT 0 COMMENT 'Pipeline 数量',
-    `table_count`             int            NOT NULL DEFAULT 0 COMMENT '表数量',
-    `last_collect_time_ms`    bigint         NOT NULL COMMENT '最近采集时间戳，单位：毫秒',
-    `last_collect_time`       datetime       NOT NULL COMMENT '最近采集时间',
-    `create_time`             datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`             datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`job_instance_id`),
-    KEY                       `idx_streaming_current_definition` (`job_definition_id`),
-    KEY                       `idx_streaming_current_engine` (`engine_job_id`),
-    KEY                       `idx_streaming_current_status` (`job_status`),
-    KEY                       `idx_streaming_current_update_time` (`update_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='实时任务当前汇总指标表';
 
-CREATE TABLE `t_baize_flow_streaming_job_metrics_snapshot`
-(
-    `collect_time_ms`         bigint         NOT NULL COMMENT '采集时间戳，单位：毫秒',
-    `job_instance_id`         bigint         NOT NULL COMMENT 'Web侧实例ID',
-    `job_definition_id`       bigint         NOT NULL COMMENT '任务定义ID',
-    `engine_job_id`           varchar(64)             DEFAULT NULL COMMENT 'SeaTunnel Engine Job ID',
-    `client_id`               bigint                  DEFAULT NULL COMMENT 'SeaTunnel Client ID',
-    `pipeline_id`             int            NOT NULL DEFAULT 0 COMMENT 'Pipeline ID',
-    `job_status`              varchar(32)             DEFAULT NULL COMMENT '引擎返回的任务状态',
-    `read_row_count`          bigint         NOT NULL DEFAULT 0 COMMENT '读取行数',
-    `write_row_count`         bigint         NOT NULL DEFAULT 0 COMMENT '写入行数',
-    `read_qps`                decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '读取QPS',
-    `write_qps`               decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '写入QPS',
-    `read_bytes`              bigint         NOT NULL DEFAULT 0 COMMENT '读取字节数',
-    `write_bytes`             bigint         NOT NULL DEFAULT 0 COMMENT '写入字节数',
-    `read_bps`                decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '读取BPS，单位：字节/秒',
-    `write_bps`               decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '写入BPS，单位：字节/秒',
-    `intermediate_queue_size` bigint         NOT NULL DEFAULT 0 COMMENT '中间队列大小',
-    `lag_count`               bigint         NOT NULL DEFAULT 0 COMMENT '滞后数量',
-    `record_delay`            bigint         NOT NULL DEFAULT 0 COMMENT '数据延迟，单位：毫秒',
-    `collect_time`            datetime       NOT NULL COMMENT '采集时间',
-    `create_time`             datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    PRIMARY KEY (`job_instance_id`, `collect_time_ms`, `pipeline_id`),
-    KEY                       `idx_streaming_metrics_definition_time` (`job_definition_id`, `collect_time_ms`),
-    KEY                       `idx_streaming_metrics_engine_time` (`engine_job_id`, `collect_time_ms`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='实时任务指标快照表';
 
-CREATE TABLE `t_baize_flow_streaming_job_table_metrics_current`
-(
-    `job_instance_id`      bigint         NOT NULL COMMENT 'Web侧实例ID',
-    `job_definition_id`    bigint         NOT NULL COMMENT '任务定义ID',
-    `engine_job_id`        varchar(64)             DEFAULT NULL COMMENT 'SeaTunnel Engine Job ID',
-    `client_id`            bigint                  DEFAULT NULL COMMENT 'SeaTunnel Client ID',
-    `pipeline_id`          int            NOT NULL DEFAULT 0 COMMENT 'Pipeline ID',
-    `source_table`         varchar(512)            DEFAULT NULL COMMENT '源表',
-    `sink_table`           varchar(512)            DEFAULT NULL COMMENT '目标表',
-    `table_key`            varchar(1024)  NOT NULL COMMENT 'source/sink 合成 key',
-    `table_key_hash`       char(32)       NOT NULL COMMENT 'table_key MD5 hash',
-    `read_row_count`       bigint         NOT NULL DEFAULT 0 COMMENT '读取行数',
-    `write_row_count`      bigint         NOT NULL DEFAULT 0 COMMENT '写入行数',
-    `read_qps`             decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '读取QPS',
-    `write_qps`            decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '写入QPS',
-    `read_bytes`           bigint         NOT NULL DEFAULT 0 COMMENT '读取字节数',
-    `write_bytes`          bigint         NOT NULL DEFAULT 0 COMMENT '写入字节数',
-    `read_bps`             decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '读取BPS，单位：字节/秒',
-    `write_bps`            decimal(20, 4) NOT NULL DEFAULT 0.0000 COMMENT '写入BPS，单位：字节/秒',
-    `status`               varchar(32)             DEFAULT NULL COMMENT '表级状态',
-    `error_msg`            text COMMENT '表级错误信息',
-    `last_collect_time_ms` bigint         NOT NULL COMMENT '最近采集时间戳，单位：毫秒',
-    `last_collect_time`    datetime       NOT NULL COMMENT '最近采集时间',
-    `create_time`          datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
-    `update_time`          datetime       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-    PRIMARY KEY (`job_instance_id`, `pipeline_id`, `table_key_hash`),
-    KEY                    `idx_streaming_table_current_definition` (`job_definition_id`),
-    KEY                    `idx_streaming_table_current_source` (`source_table`),
-    KEY                    `idx_streaming_table_current_sink` (`sink_table`),
-    KEY                    `idx_streaming_table_current_update_time` (`update_time`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='实时任务当前表级指标表';
-
--- ============================================================
--- 2. Quartz scheduler tables
--- ============================================================
 
 CREATE TABLE `QRTZ_JOB_DETAILS`
 (
