@@ -3,7 +3,8 @@ package io.baize.flow.api.config;
 import org.apache.commons.lang3.StringUtils;
 import io.baize.flow.api.security.AuthenticationType;
 import io.baize.flow.api.security.Authenticator;
-import io.baize.flow.api.security.impl.pwd.PasswordAuthenticator;
+import io.baize.flow.infrastructure.security.impl.pwd.PasswordAuthenticator;
+import io.baize.flow.api.security.SecurityConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SecurityConfig {
+public class SecurityConfig implements SecurityConfiguration {
     private static final Logger logger = LoggerFactory.getLogger(SecurityConfig.class);
 
     @Value("${security.authentication.type:PASSWORD}")

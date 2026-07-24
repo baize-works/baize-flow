@@ -13,7 +13,6 @@
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-application</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-domain</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-dao</artifactId></dependency>
-        <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-web</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-api</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-seatunnel</artifactId></dependency>
         <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-alarm-all</artifactId></dependency>
