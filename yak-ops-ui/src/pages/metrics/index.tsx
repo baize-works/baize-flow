@@ -1,11 +1,9 @@
-import { message, Segmented, Select, Spin } from "antd";
+import { message, Select, Spin } from "antd";
 import { motion } from "framer-motion";
 import {
-  Activity,
   BarChart3,
   Clock3,
   Database,
-  Layers3,
   Target,
 } from "lucide-react";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
@@ -218,31 +216,6 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3">
-                  <Segmented
-                    value={taskType}
-                    onChange={(value) => setTaskType(value as TaskType)}
-                    className="task-type-segmented"
-                    options={[
-                      {
-                        label: (
-                          <div className="task-type-option">
-                            <Layers3 size={14} /> 离线同步
-                          </div>
-                        ),
-                        value: "BATCH",
-                      },
-                      {
-                        label: (
-                          <div className="task-type-option">
-                            <Activity size={14} />
-                            实时同步
-                          </div>
-                        ),
-                        disabled: true,
-                        value: "STREAMING",
-                      },
-                    ]}
-                  />
                   <Select
                     value={timeRange}
                     onChange={(value) => setTimeRange(value)}

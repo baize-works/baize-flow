@@ -7,8 +7,7 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public enum JobMode {
-    BATCH("BATCH", "离线"),
-    STREAMING("STREAMING", "实时");
+    BATCH("BATCH", "离线");
 
     @EnumValue
     private final String code;

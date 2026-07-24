@@ -30,7 +30,7 @@ const MIN_AUTO_LOADING_DURATION = 450;
 const MIN_MANUAL_LOADING_DURATION = 280;
 
 export type ConnectivityStatus = "idle" | "loading" | "success" | "error";
-export type LinkScene = "offline" | "realtime";
+export type LinkScene = "offline";
 
 interface SelectOption {
   label: string;

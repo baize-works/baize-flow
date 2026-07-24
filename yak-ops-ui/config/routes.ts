@@ -46,32 +46,6 @@ export default [
     hideInMenu: true,
   },
   {
-    icon: 'wifi',
-    name: 'data-sync.stream',
-    path: '/sync/stream-link-up',
-    component: './stream-link-up',
-  },
-  {
-    path: '/sync/stream-link-up/:id/detail',
-    component: './stream-link-up/detail',
-    hideInMenu: true,
-  },
-  {
-    path: '/sync/stream-link-up/:id/config/single',
-    component: './stream-link-up/config/single',
-    hideInMenu: true,
-  },
-  {
-    path: '/sync/stream-link-up/:id/config/multi',
-    component: './stream-link-up/config/multi',
-    hideInMenu: true,
-  },
-  {
-    path: '/sync/stream-link-up/:id/config/script',
-    component: './stream-link-up/config/script',
-    hideInMenu: true,
-  },
-  {
     icon: 'bulb',
     name: 'client',
     path: '/client',

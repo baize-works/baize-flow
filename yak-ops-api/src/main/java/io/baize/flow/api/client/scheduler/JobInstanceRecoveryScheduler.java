@@ -6,9 +6,7 @@ import io.baize.flow.api.metrics.JobResultHandler;
 import io.baize.flow.api.metrics.JobRuntimeContext;
 import io.baize.flow.common.enums.JobStatus;
 import io.baize.flow.dao.entity.JobInstance;
-import io.baize.flow.dao.entity.StreamingJobInstance;
 import io.baize.flow.dao.repository.JobInstanceDao;
-import io.baize.flow.dao.repository.StreamingJobInstanceDao;
 import io.baize.flow.engine.client.handler.ZetaJobStatusHandler;
 import io.baize.flow.engine.client.modal.ZetaJobStatusResolveResult;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,8 +36,6 @@ public class JobInstanceRecoveryScheduler {
     @Resource
     private JobInstanceDao jobInstanceDao;
 
-    @Resource
-    private StreamingJobInstanceDao streamingJobInstanceDao;
 
     @Resource
     private ZetaJobStatusHandler zetaJobStatusHandler;
@@ -59,7 +55,6 @@ public class JobInstanceRecoveryScheduler {
         log.info("Start recovering running job instances after Yak Ops startup");
 
         recoverBatchInstances();
-        recoverStreamingInstances();
 
         log.info("Recover running job instances after Yak Ops startup finished");
     }
@@ -74,7 +69,6 @@ public class JobInstanceRecoveryScheduler {
         }
 
         recoverBatchInstances();
-        recoverStreamingInstances();
     }
 
     private void recoverBatchInstances() {
@@ -99,27 +93,6 @@ public class JobInstanceRecoveryScheduler {
         }
     }
 
-    private void recoverStreamingInstances() {
-        List<StreamingJobInstance> instances = streamingJobInstanceDao.listRunningLikeInstances();
-        if (instances == null || instances.isEmpty()) {
-            return;
-        }
-
-        log.info("Start recovering streaming running-like instances, count={}", instances.size());
-
-        for (StreamingJobInstance instance : instances) {
-            try {
-                recoverStreamingInstance(instance);
-            } catch (Exception e) {
-                log.warn(
-                        "Recover streaming job instance failed, instanceId={}, engineJobId={}",
-                        instance == null ? null : instance.getId(),
-                        instance == null ? null : instance.getEngineJobId(),
-                        e
-                );
-            }
-        }
-    }
 
     private void recoverBatchInstance(JobInstance instance) {
         if (instance == null || instance.getId() == null) {
@@ -168,43 +141,6 @@ public class JobInstanceRecoveryScheduler {
         );
     }
 
-    private void recoverStreamingInstance(StreamingJobInstance instance) {
-        if (instance == null || instance.getId() == null) {
-            return;
-        }
-
-        ZetaJobStatusResolveResult result = zetaJobStatusHandler.resolve(
-                instance.getClientId(),
-                instance.getEngineJobId()
-        );
-
-        if (shouldSkipRecovery(instance.getId(), instance.getEngineJobId(), result)) {
-            return;
-        }
-
-        JobStatus targetStatus = result.getLocalStatus();
-
-        String errorMessage = buildRecoveryMessage(
-                instance.getId(),
-                instance.getEngineJobId(),
-                result
-        );
-
-        log.warn(
-                "Recover streaming job instance final status, instanceId={}, engineJobId={}, targetStatus={}, engineStatus={}, message={}",
-                instance.getId(),
-                instance.getEngineJobId(),
-                targetStatus,
-                result.getEngineStatus(),
-                result.getMessage()
-        );
-
-        streamingJobInstanceDao.updateStatus(
-                instance.getId(),
-                targetStatus,
-                errorMessage
-        );
-    }
 
     private JobRuntimeContext buildBatchRuntimeContext(JobInstance instance) {
         JobRuntimeContext context = new JobRuntimeContext();

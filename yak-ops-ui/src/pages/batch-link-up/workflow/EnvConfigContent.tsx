@@ -3,7 +3,7 @@ import { Activity, Gauge } from "lucide-react";
 
 interface EnvConfigContentProps {
   value?: {
-    "jobMode"?: "BATCH" | "STREAMING";
+    "jobMode"?: "BATCH";
     parallelism?: number;
   };
   onChange?: React.Dispatch<React.SetStateAction<any>>;
@@ -84,7 +84,7 @@ export default function EnvConfigContent({
               className="w-full"
             />
             <div className="mt-1.5 text-[11px] leading-5 text-slate-400">
-              BATCH 适合离线批处理任务，STREAMING 适合持续运行的流式任务。
+              BATCH 适合离线批处理任务。
             </div>
           </div>
 

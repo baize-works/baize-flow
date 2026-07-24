@@ -8,8 +8,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum JobRuntimeType {
 
-    BATCH("BATCH", "离线任务"),
-    STREAMING("STREAMING", "实时任务");
+    BATCH("BATCH", "离线任务");
 
     @EnumValue
     private final String code;

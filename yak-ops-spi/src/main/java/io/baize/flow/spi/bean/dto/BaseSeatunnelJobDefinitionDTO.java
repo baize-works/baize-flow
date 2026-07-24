@@ -47,9 +47,9 @@ public abstract class BaseSeatunnelJobDefinitionDTO extends PaginationBaseDTO {
     private String jobDesc;
 
     @Schema(
-            description = "Job type (BATCH or STREAMING)",
+            description = "Job type (BATCH)",
             example = "BATCH",
-            allowableValues = {"BATCH", "STREAMING"},
+            allowableValues = {"BATCH"},
             accessMode = Schema.AccessMode.READ_ONLY
     )
     private String jobType;
@@ -150,11 +150,11 @@ public abstract class BaseSeatunnelJobDefinitionDTO extends PaginationBaseDTO {
     /**
      * Get job type
      *
-     * @return "STREAMING" or "BATCH"
+     * @return "BATCH"
      */
     @Schema(
             description = "Job type",
-            allowableValues = {"BATCH", "STREAMING"}
+            allowableValues = {"BATCH"}
     )
     public abstract String getJobType();
 }

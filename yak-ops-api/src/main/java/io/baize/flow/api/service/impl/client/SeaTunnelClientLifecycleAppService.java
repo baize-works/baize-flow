@@ -19,7 +19,6 @@ import io.baize.flow.dao.entity.SeaTunnelClientNode;
 import io.baize.flow.dao.repository.JobDefinitionDao;
 import io.baize.flow.dao.repository.SeaTunnelClientDao;
 import io.baize.flow.dao.repository.SeaTunnelClientNodeDao;
-import io.baize.flow.dao.repository.StreamingJobDefinitionDao;
 import io.baize.flow.engine.client.modal.SeaTunnelClientAuth;
 import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
 import io.baize.flow.spi.bean.dto.SeaTunnelClientDTO;
@@ -70,8 +69,6 @@ public class SeaTunnelClientLifecycleAppService {
     @Resource
     private JobDefinitionDao jobDefinitionDao;
 
-    @Resource
-    private StreamingJobDefinitionDao streamingJobDefinitionDao;
 
 
 
@@ -113,8 +110,7 @@ public class SeaTunnelClientLifecycleAppService {
     /**
      * Deletes a SeaTunnel client and its related nodes.
      *
-     * <p>The client can only be deleted when it is not referenced by any batch or
-     * streaming job definition.</p>
+     * <p>The client can only be deleted when it is not referenced by any batch job definition.</p>
      *
      * @param id client id
      */

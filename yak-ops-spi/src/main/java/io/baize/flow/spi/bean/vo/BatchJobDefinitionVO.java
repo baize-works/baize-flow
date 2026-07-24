@@ -27,7 +27,7 @@ public class BatchJobDefinitionVO {
     private JobDefinitionMode mode;
 
     /**
-     * BATCH / STREAMING
+     * BATCH
      */
     private JobMode jobType;
 

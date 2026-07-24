@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * <p>
  * This class only handles batch job submission, metrics monitoring,
- * and result watching. Streaming jobs should use StreamingJobSubmitter.
+ * and result watching.
  * </p>
  */
 @Component

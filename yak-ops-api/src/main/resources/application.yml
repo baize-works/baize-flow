@@ -110,14 +110,6 @@ seatunnel:
     max-error-times: 30
     no-progress-warn-ms: 300000
 
-  streaming:
-    metrics:
-      interval-ms: 5000
-      max-empty-times: 30
-      max-error-times: 30
-      log-every-times: 10
-      retention-days: 7
-      retention-cron: "0 20 3 * * ?"
 
   client:
     health-check:

@@ -145,22 +145,6 @@ export const seatunnelJobInstanceApi = {
   },
 };
 
-const streamingInstanceApiPrefix = '/api/v1/job/streaming-instance';
-
-export const streamingSeatunnelJobInstanceApi = {
-  page: (data: any): Promise<{ code: number; data: any; message?: string }> => {
-    return HttpUtils.post(`${streamingInstanceApiPrefix}/page`, data);
-  },
-
-  selectById: (id: string): Promise<{ code: number; data: any; message?: string }> => {
-    return HttpUtils.get(`${streamingInstanceApiPrefix}/${id}`);
-  },
-
-  getLog(instanceId: string) {
-    return HttpUtils.get(`${streamingInstanceApiPrefix}/${instanceId}/log`);
-  },
-};
-
 const seatunnelJobScheduleApiPrefix = '/api/v1/job/schedule';
 
 export const seatunnelJobScheduleApi = {

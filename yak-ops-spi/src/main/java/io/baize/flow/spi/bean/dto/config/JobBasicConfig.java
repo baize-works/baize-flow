@@ -13,7 +13,7 @@ public class JobBasicConfig {
     private JobDefinitionMode mode;
 
     /**
-     * 运行类型：BATCH / STREAMING
+     * 运行类型：BATCH
      */
     private JobRuntimeType runtimeType;
 

@@ -164,8 +164,8 @@ export interface AlarmChannelCommand {
 export interface JobDefinitionOption {
   id: number;
   jobName: string;
-  /** batch / streaming，用于 label 前缀区分 */
-  type: 'batch' | 'streaming';
+  /** 仅支持离线批任务。 */
+  type: 'batch';
 }
 
 /** 弹窗打开参数 */
