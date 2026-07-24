@@ -1,4 +1,4 @@
-package io.baize.flow.engine.client.rest;
+package io.baize.flow.engine.seatunnel.rest;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

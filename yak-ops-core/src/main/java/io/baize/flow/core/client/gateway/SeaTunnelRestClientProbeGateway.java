@@ -8,8 +8,8 @@ import io.baize.flow.core.client.model.SeaTunnelClientEndpoint;
 import io.baize.flow.core.client.model.SeaTunnelClientProbeResult;
 import io.baize.flow.core.client.port.SeaTunnelClientProbeGateway;
 import io.baize.flow.core.utils.MetricValueParser;
-import io.baize.flow.engine.client.modal.SeaTunnelClientAuth;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.model.SeaTunnelClientAuth;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

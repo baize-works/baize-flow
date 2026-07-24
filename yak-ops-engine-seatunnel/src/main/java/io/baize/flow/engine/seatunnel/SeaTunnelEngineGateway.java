@@ -1,7 +1,7 @@
 package io.baize.flow.engine.seatunnel;
 
 import io.baize.flow.engine.api.*;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Component;
 

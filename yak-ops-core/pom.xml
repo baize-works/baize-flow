@@ -47,6 +47,7 @@
             <version>1.0.0</version>
         </dependency>
 
+            <dependency><groupId>io.baize.flow</groupId><artifactId>yak-ops-engine-seatunnel</artifactId></dependency>
     </dependencies>
 
 

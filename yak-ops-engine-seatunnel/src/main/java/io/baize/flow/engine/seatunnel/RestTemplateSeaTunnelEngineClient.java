@@ -1,6 +1,6 @@
 package io.baize.flow.engine.seatunnel;
 
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import java.util.List;
 import java.util.Map;
 

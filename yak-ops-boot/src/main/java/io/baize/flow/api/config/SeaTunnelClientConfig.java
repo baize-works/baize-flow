@@ -1,8 +1,8 @@
 package io.baize.flow.api.config;
 
-import io.baize.flow.engine.client.rest.SeaTunnelClientProperties;
-import io.baize.flow.engine.client.rest.SeaTunnelClientResolver;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelClientProperties;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelClientResolver;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

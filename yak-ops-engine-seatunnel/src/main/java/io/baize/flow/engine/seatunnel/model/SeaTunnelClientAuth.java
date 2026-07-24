@@ -1,4 +1,4 @@
-package io.baize.flow.engine.client.modal;
+package io.baize.flow.engine.seatunnel.model;
 
 import lombok.Data;
 

@@ -1,6 +1,7 @@
-package io.baize.flow.engine.client.rest;
+package io.baize.flow.engine.seatunnel.rest;
 
-import io.baize.flow.engine.client.modal.SeaTunnelClientAuth;
+import io.baize.flow.engine.seatunnel.exception.SeaTunnelClientException;
+import io.baize.flow.engine.seatunnel.model.SeaTunnelClientAuth;
 import org.springframework.stereotype.Service;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -160,9 +161,9 @@ public class SeaTunnelRestClient {
         return post(clientId, "/job/stop-batch", items, MediaType.APPLICATION_JSON, Map.of(), List.class);
     }
 
-    private <T> T get(Long clientId, String path, Map<String, String> query, Class<T> type) { return get(resolver.resolveBaseApiUrl(clientId), null, query, resolver.resolveAuth(clientId), path, type); }
+    private <T> T get(Long clientId, String path, Map<String, String> query, Class<T> type) { return get(resolver.resolveBaseApiUrl(clientId), resolver.resolveContextPath(clientId), query, resolver.resolveAuth(clientId), path, type); }
     private <T> T get(String baseUrl, String contextPath, Map<String, String> query, SeaTunnelClientAuth auth, String path, Class<T> type) { return exchange(baseUrl, contextPath, path, HttpMethod.GET, null, null, query, auth, type); }
-    private <T> T post(Long clientId, String path, Object body, MediaType contentType, Map<String, String> query, Class<T> type) { return exchange(resolver.resolveBaseApiUrl(clientId), null, path, HttpMethod.POST, body, contentType, query, resolver.resolveAuth(clientId), type); }
+    private <T> T post(Long clientId, String path, Object body, MediaType contentType, Map<String, String> query, Class<T> type) { return exchange(resolver.resolveBaseApiUrl(clientId), resolver.resolveContextPath(clientId), path, HttpMethod.POST, body, contentType, query, resolver.resolveAuth(clientId), type); }
     private <T> T exchange(String baseUrl, String contextPath, String path, HttpMethod method, Object body, MediaType contentType, Map<String, String> query, SeaTunnelClientAuth auth, Class<T> type) {
         HttpHeaders headers = new HttpHeaders(); if (contentType != null) headers.setContentType(contentType); if (auth != null && Boolean.TRUE.equals(auth.getAuthEnabled())) headers.setBasicAuth(auth.getUsername(), auth.getPassword());
         String root = trim(baseUrl) + normalize(contextPath) + REST_ROOT + path;

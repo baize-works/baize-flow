@@ -6,7 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import io.baize.flow.common.enums.SeaTunnelClientHealthStatusEnum;
 import io.baize.flow.dao.entity.SeaTunnelClient;
 import io.baize.flow.dao.repository.SeaTunnelClientDao;
-import io.baize.flow.engine.client.handler.ZetaEngineFailureHandler;
+import io.baize.flow.api.service.application.engine.HandleEngineHealthResultUseCase;
 import io.baize.flow.api.service.application.job.CheckEngineHealthUseCase;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,7 +29,7 @@ public class ZetaEngineHealthCheckScheduler {
     private CheckEngineHealthUseCase checkEngineHealthUseCase;
 
     @Resource
-    private ZetaEngineFailureHandler zetaEngineFailureHandler;
+    private HandleEngineHealthResultUseCase engineHealthResultUseCase;
 
     @Value("${seatunnel.client.health-check.enabled:true}")
     private boolean enabled;
@@ -68,7 +68,7 @@ public class ZetaEngineHealthCheckScheduler {
         try {
             /*
              * 使用 clientId 探活。
-             * 这样 SeaTunnelRestClient 可以自动解析 baseUrl 和 Basic Auth。
+             * 连接信息由 application port 提供给 SeaTunnel adapter。
              */
             if (!checkEngineHealthUseCase.check(clientId)) { throw new IllegalStateException("Engine health probe reported unhealthy"); }
 
@@ -78,7 +78,7 @@ public class ZetaEngineHealthCheckScheduler {
                     client.getHealthStatus(),
                     SeaTunnelClientHealthStatusEnum.LIVE.getCode()
             )) {
-                zetaEngineFailureHandler.markClientLive(clientId);
+                engineHealthResultUseCase.markLive(clientId);
                 log.info("Zeta engine recovered, clientId={}, clientName={}",
                         clientId, client.getClientName());
             }
@@ -125,7 +125,7 @@ public class ZetaEngineHealthCheckScheduler {
                 reason
         );
 
-        zetaEngineFailureHandler.markClientDeadAndFailRunningInstances(clientId, errorMessage);
+        engineHealthResultUseCase.markDeadAndFailRunningExecutions(clientId, errorMessage);
     }
 
     private String buildErrorMessage(SeaTunnelClient client, String reason) {

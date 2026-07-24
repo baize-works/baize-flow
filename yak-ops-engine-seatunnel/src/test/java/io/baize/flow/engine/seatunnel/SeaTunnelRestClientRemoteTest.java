@@ -1,7 +1,7 @@
-package io.baize.flow.engine.client;
+package io.baize.flow.engine.seatunnel;
 
-import io.baize.flow.engine.client.rest.SeaTunnelClientResolver;
-import io.baize.flow.engine.client.rest.SeaTunnelRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelClientResolver;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelRestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;

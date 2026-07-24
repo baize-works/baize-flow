@@ -2,7 +2,7 @@ package io.baize.flow.infrastructure.metrics.fetch;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import io.baize.flow.engine.client.rest.SeaTunnelEngineRestClient;
+import io.baize.flow.engine.seatunnel.rest.SeaTunnelEngineRestClient;
 import org.springframework.stereotype.Service;
 
 import java.util.Collections;
